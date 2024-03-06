@@ -1,0 +1,87 @@
+<%- include('../partials/userPartials/header') %>
+
+<section class="h-100 gradient-custom">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-lg-10 col-xl-8">
+        <div class="card" style="border-radius: 10px;">
+          <div class="card-header px-4 py-5">
+            <h5 class="text-muted mb-0">My Orders</h5>
+          </div>
+          <div class="card-body p-4">
+            <% orders.forEach(ele => { %>
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <p class="lead fw-normal mb-0" style="color: #1243ad;">orderid: <%-ele._id%></p>
+                <a href="/trackOrder/<%-ele._id%>" class="btn btn-outline-primary btn-sm">Track Order</a>
+              </div>
+
+              <div class="card shadow-0 border mb-4">
+                <div class="card-body">
+                  <% ele.products.forEach((el,i) => { %>
+                    <div class="row">
+                      <div class="col-md-2">
+                        <img src="/product_img/<%-el.productId.images[0] %>" class="img-fluid" alt="Phone">
+                      </div>
+                      <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                        <p class="text-muted mb-0"><%-el.productId.lapName %></p>
+                      </div>
+                      <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                        <p class="text-muted mb-0 small"><%-el.productId.specOne %></p>
+                      </div>
+                      <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                        <p class="text-muted mb-0 small">Qty: <%-el.quantity %></p>
+                      </div>
+                      <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                        <p class="text-muted mb-0 small">₹<%-el.productId.discountPrice %></p>
+                      </div>
+                      <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                        <% if(ele.orderStatus == 'Order Processed') { %>
+                          <span class="badge rounded-pill bg-primary"><%-ele.orderStatus%></span>
+                        <% }else if(ele.orderStatus == 'Order Confirmed'){ %>
+                          <span class="badge rounded-pill bg-secondary"><%-ele.orderStatus%></span>
+                        <% }else if(ele.orderStatus == 'Order Shipped'){ %>
+                          <span class="badge rounded-pill bg-info"><%-ele.orderStatus%></span>
+                        <% }else if(ele.orderStatus == 'Order Delivered'){ %>
+                          <span class="badge rounded-pill bg-success"><%-ele.orderStatus%></span>
+                        <% }else if(ele.orderStatus == 'cancelled'){ %>
+                          <span class="badge rounded-pill bg-danger"><%-ele.orderStatus%></span>
+                        <% } %>
+                      </div>
+                    </div>
+                  <% }) %>
+                </div>
+              </div>
+            <% }) %>
+
+            <!-- Pagination -->
+            <nav aria-label="Page navigation">
+              <ul class="pagination justify-content-center">
+                <% if (currentPage > 1) { %>
+                  <li class="page-item">
+                    <a class="page-link" href="/myOrders?page=<%= currentPage - 1 %>" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                <% } %>
+                <% for (let i = 1; i <= totalPages; i++) { %>
+                  <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                    <a class="page-link" href="/myOrders?page=<%= i %>"><%= i %></a>
+                  </li>
+                <% } %>
+                <% if (currentPage < totalPages) { %>
+                  <li class="page-item">
+                    <a class="page-link" href="/myOrders?page=<%= currentPage + 1 %>" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                <% } %>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/userPartials/footer') %>

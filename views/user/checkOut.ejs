@@ -1,0 +1,786 @@
+<%-include('../partials/userPartials/header')%>
+
+
+
+
+
+
+
+
+   <style>
+      .card {
+         margin-bottom: 24px;
+         -webkit-box-shadow: 0 2px 3px #e4e8f0;
+         box-shadow: 0 2px 3px #e4e8f0;
+      }
+
+      .card {
+         position: relative;
+         display: -webkit-box;
+         display: -ms-flexbox;
+         display: flex;
+         -webkit-box-orient: vertical;
+         -webkit-box-direction: normal;
+         -ms-flex-direction: column;
+         flex-direction: column;
+         min-width: 0;
+         word-wrap: break-word;
+         background-color: #fff;
+         background-clip: border-box;
+         border: 1px solid #eff0f2;
+         border-radius: 1rem;
+      }
+
+      .activity-checkout {
+         list-style: none
+      }
+
+      .activity-checkout .checkout-icon {
+         position: absolute;
+         top: -4px;
+         left: -24px
+      }
+
+      .activity-checkout .checkout-item {
+         position: relative;
+         padding-bottom: 24px;
+         padding-left: 35px;
+         border-left: 2px solid #f5f6f8
+      }
+
+      .activity-checkout .checkout-item:first-child {
+         border-color: #3b76e1
+      }
+
+      .activity-checkout .checkout-item:first-child:after {
+         background-color: #3b76e1
+      }
+
+      .activity-checkout .checkout-item:last-child {
+         border-color: transparent
+      }
+
+      .activity-checkout .checkout-item.crypto-activity {
+         margin-left: 50px
+      }
+
+      .activity-checkout .checkout-item .crypto-date {
+         position: absolute;
+         top: 3px;
+         left: -65px
+      }
+
+
+
+      .avatar-xs {
+         height: 1rem;
+         width: 1rem
+      }
+
+      .avatar-sm {
+         height: 2rem;
+         width: 2rem
+      }
+
+      .avatar {
+         height: 3rem;
+         width: 3rem
+      }
+
+      .avatar-md {
+         height: 4rem;
+         width: 4rem
+      }
+
+      .avatar-lg {
+         height: 5rem;
+         width: 5rem
+      }
+
+      .avatar-xl {
+         height: 6rem;
+         width: 6rem
+      }
+
+      .avatar-title {
+         -webkit-box-align: center;
+         -ms-flex-align: center;
+         align-items: center;
+         background-color: #3b76e1;
+         color: #fff;
+         display: -webkit-box;
+         display: -ms-flexbox;
+         display: flex;
+         font-weight: 500;
+         height: 100%;
+         -webkit-box-pack: center;
+         -ms-flex-pack: center;
+         justify-content: center;
+         width: 100%
+      }
+
+      .avatar-group {
+         display: -webkit-box;
+         display: -ms-flexbox;
+         display: flex;
+         -ms-flex-wrap: wrap;
+         flex-wrap: wrap;
+         padding-left: 8px
+      }
+
+      .avatar-group .avatar-group-item {
+         margin-left: -8px;
+         border: 2px solid #fff;
+         border-radius: 50%;
+         -webkit-transition: all .2s;
+         transition: all .2s
+      }
+
+      .avatar-group .avatar-group-item:hover {
+         position: relative;
+         -webkit-transform: translateY(-2px);
+         transform: translateY(-2px)
+      }
+
+      .card-radio {
+         background-color: #fff;
+         border: 2px solid #eff0f2;
+         border-radius: .75rem;
+         padding: .5rem;
+         overflow: hidden;
+         text-overflow: ellipsis;
+         white-space: nowrap;
+         display: block
+      }
+
+      .card-radio:hover {
+         cursor: pointer
+      }
+
+      .card-radio-label {
+         display: block
+      }
+
+      .edit-btn {
+         width: 35px;
+         height: 35px;
+         line-height: 40px;
+         text-align: center;
+         position: absolute;
+         right: 25px;
+         margin-top: -50px
+      }
+
+      .card-radio-input {
+         display: none
+      }
+
+      .card-radio-input:checked+.card-radio {
+         border-color: #3b76e1 !important
+      }
+
+
+      .font-size-16 {
+         font-size: 16px !important;
+      }
+
+      .text-truncate {
+         overflow: hidden;
+         text-overflow: ellipsis;
+         white-space: nowrap;
+      }
+
+      a {
+         text-decoration: none !important;
+      }
+
+
+      .form-control {
+         display: block;
+         width: 100%;
+         padding: 0.47rem 0.75rem;
+         font-size: .875rem;
+         font-weight: 400;
+         line-height: 1.5;
+         color: #545965;
+         background-color: #fff;
+         background-clip: padding-box;
+         border: 1px solid #e2e5e8;
+         -webkit-appearance: none;
+         -moz-appearance: none;
+         appearance: none;
+         border-radius: 0.75rem;
+         -webkit-transition: border-color .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
+         transition: border-color .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
+         transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+         transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
+      }
+
+      .edit-btn {
+         width: 35px;
+         height: 35px;
+         line-height: 40px;
+         text-align: center;
+         position: absolute;
+         right: 25px;
+         margin-top: -50px;
+      }
+
+      .ribbon {
+         position: absolute;
+         right: -26px;
+         top: 20px;
+         -webkit-transform: rotate(45deg);
+         transform: rotate(45deg);
+         color: #fff;
+         font-size: 13px;
+         font-weight: 500;
+         padding: 1px 22px;
+         font-size: 13px;
+         font-weight: 500
+      }
+   </style>
+
+   <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.css"
+      integrity="sha256-NAxhqDvtY0l4xn+YVa6WjAcmd94NNfttjNsDmNatFVc=" crossorigin="anonymous" />
+   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+   <div class="container" id="checkoutContainer">
+
+      <div class="row mt-4 ">
+
+
+         <div class="col-xl-8">
+            <form action="/orderPlaced">
+
+               <div class="card">
+                  <div class="card-body">
+                     <ol class="activity-checkout mb-0 px-4 mt-3">
+
+
+
+                        <li class="checkout-item">
+                           <div class="avatar checkout-icon p-1">
+                              <div class="avatar-title rounded-circle bg-primary">
+                                 <i class="bx bxs-truck text-white font-size-20"></i>
+                              </div>
+                           </div>
+                           <div class="feed-item-list">
+                              <div>
+                                 <h5 class="font-size-16 mb-1">Shipping Info</h5>
+                                 <p class="text-muted text-truncate mb-4">Neque porro quisquam est</p>
+                                 <div class="mb-3">
+                                    <div class="row">
+
+                                       <% if(addrs.length>0){ %>
+
+                                          <% addrs.forEach((ele,i)=> { %>
+
+                                             <div class="col-lg-4 col-sm-6">
+                                                <div data-bs-toggle="collapse">
+                                                   <label class="card-radio-label mb-0">
+                                                      <input type="radio" name="address" id="info-address1"
+                                                         value="<%- ele._id %>" class="card-radio-input" checked="">
+                                                      <div class="card-radio text-truncate p-3">
+                                                         <span class="fs-14 mb-4 d-block">Address <%= i + 1 %></span>
+                                                         <span class="fs-14 mb-2 d-block"><b><%- ele.name %></b>
+                                                            <%- ele.locality %></span>
+                                                         <span class="text-muted fw-normal text-wrap mb-1 d-block"><%-
+                                                               ele.address %></span>
+
+                                                         <span class="text-muted fw-normal d-block"><%- ele.mobile
+                                                               %></span>
+                                                         <span class="text-muted fw-normal d-block"><%- ele.pincode
+                                                               %></span>
+                                                      </div>
+                                                   </label>
+
+                                                </div>
+                                             </div>
+
+                                             <% }) %>
+                                                <div class="edit-btn bg-light  rounded">
+                                                   <a href="/spotAddressAdd" data-bs-toggle="tooltip"
+                                                      data-placement="top" title="" data-bs-original-title="Edit">
+                                                      <i class="bx bx-pencil font-size-16"></i>
+                                                   </a>
+                                                </div>
+
+
+                                                <% }else{ %>
+
+                                                   <h4 class="text-primary">Please add address</h4>
+                                                   <div class="edit-btn bg-light  rounded">
+                                                      <a href="/spotAddressAdd" data-bs-toggle="tooltip"
+                                                         data-placement="top" title="" data-bs-original-title="Edit">
+                                                         <i class="bx bx-pencil font-size-16"></i>
+                                                      </a>
+                                                   </div>
+
+                                                   <% } %>
+
+
+
+
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </li>
+                        <li class="checkout-item">
+                           <div class="avatar checkout-icon p-1">
+                              <div class="avatar-title rounded-circle bg-primary">
+                                 <i class="bx bxs-wallet-alt text-white font-size-20"></i>
+                              </div>
+                           </div>
+                           <div class="feed-item-list">
+                              <div>
+                                 <h5 class="font-size-16 mb-1">Payment Info</h5>
+                                 <p class="text-muted text-truncate mb-4">Duis arcu tortor, suscipit eget</p>
+                                 <% if(oder.total > 50000){ %>
+                                    <p class=" text-truncate mb-4 text-danger">Order above 50000 is not allowed for COD</p>
+                                 <% } %>
+                              </div>
+                              <div>
+                                 <h5 class="font-size-14 mb-3">Payment method :</h5>
+                                 <div class="row">
+                                    <div class="col-lg-3 col-sm-6">
+                                       <div data-bs-toggle="collapse">
+                                          <label class="card-radio-label">
+                                             <input type="radio" name="payMethod" id="pay-methodoption1" value="wallet"
+                                                class="card-radio-input">
+                                             <span class="card-radio py-3 text-center text-truncate">
+                                                <i class="fa-solid fa-wallet d-block h2 mb-3"></i>
+                                                Wallet
+                                             </span>
+                                          </label>
+                                       </div>
+                                    </div>
+
+                                    <div class="col-lg-3 col-sm-6">
+                                       <div>
+                                          <label class="card-radio-label">
+                                             <input type="radio" name="payMethod" id="pay-methodoption2" value="online"
+                                                class="card-radio-input" checked="">
+                                             <span class="card-radio py-3 text-center text-truncate">
+                                                <i class="bx bxl-paypal d-block h2 mb-3"></i>
+                                                Online Payment
+                                             </span>
+                                          </label>
+                                       </div>
+                                    </div>
+
+                                    <div class="col-lg-3 col-sm-6">
+                                       <div>
+                                          <label class="card-radio-label">
+                                             <% if(oder.total > 50000){ %>
+                                                <input type="radio" name="payMethod" id="pay-methodoption3" value="cash"
+                                                   class="card-radio-input" disabled>
+                                             <% }else{ %>
+                                                <input type="radio" name="payMethod" id="pay-methodoption3" value="cash"
+                                                   class="card-radio-input">
+                                             <% } %>
+                                             <span class="card-radio py-3 text-center text-truncate">
+                                                <i class="bx bx-money d-block h2 mb-3"></i>
+                                                <span>Cash on Delivery</span>
+                                             </span>
+                                          </label>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </li>
+                     </ol>
+                  </div>
+               </div>
+
+
+               <div class="row my-4">
+                  <div class="col">
+                     <a href="/products" class="btn btn-link text-muted">
+                        <i class="mdi mdi-arrow-left me-1"></i> Continue Shopping
+                     </a>
+                  </div> <!-- end col -->
+                  <div class="col">
+                     <div class="text-end mt-2 mt-sm-0">
+
+                        <button type="button" id="proceedBtn" class="btn btn-secondary"><i
+                              class="mdi mdi-cart-outline me-1"></i> Procced</button>
+                     </div>
+                  </div> <!-- end col -->
+               </div> <!-- end row-->
+            </form>
+
+         </div>
+         <div class="col-xl-4">
+            <div class="card p-4 orderSummaryDisplay">
+               <div class="p-3 bg-light mb-0">
+                  <h5 class="font-size-16 mb-0">Order Summary </h5>
+               </div>
+               <div class="table-responsive">
+                  <table class="table table-centered mb-0 table-nowrap">
+
+                     <tbody>
+
+
+                        <tr>
+                           <td colspan="2">
+                              <h5 class="font-size-14 m-0">Sub Total :</h5>
+                           </td>
+                           <td>
+                              ₹<%- oder?.subTotal??null %>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td colspan="2">
+                              <h5 class="font-size-14 m-0">Discount :</h5>
+                           </td>
+                           <td>
+                              - ₹ <%- oder.discount %>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td colspan="2">
+                              <h5 class="font-size-14 m-0">Coupon Discount :</h5>
+                           </td>
+                           <td>
+                              - ₹ <%- oder.couponDiscount %>
+                           </td>
+                        </tr>
+
+                        <tr>
+                           <td colspan="2">
+                              <h5 class="font-size-14 m-0">Shipping Charge :</h5>
+                           </td>
+                           <td>
+                              <del>₹ 100 </del> Free
+
+                           </td>
+                        </tr>
+
+
+                        <tr class="bg-light">
+                           <td colspan="2">
+                              <h5 class="font-size-14 m-0">Total:</h5>
+                           </td>
+                           <td>
+                              <b>
+                                 ₹ <%- oder.total %>
+                              </b>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+
+               </div>
+
+
+            </div>
+
+            <!-- Wallet Amount show -->
+
+            <div class="card p-4">
+               <div class="p-3 bg-light mb-0">
+                  <h5 class="font-size-16 mb-0">Wallet Amount : <span class="float-end ms-2 text-primary">₹ <%- walt %></span></h5>
+               </div>
+
+            </div>
+
+            
+            <!-- Add coupon -->
+            
+            <div class="card p-4 ">
+               <% if( oder.couponDiscount > 0) { %>
+                  <div class="p-3 bg-light mb-1 row">
+                     <b>
+                        <h5 class="font-size-26 mb-0 text-primary">Coupon Applied</h5>
+                     </b>
+                  </div>
+               <% }else{ %>
+                  <div class="p-3 bg-light mb-1 row">
+                     <b>
+                        <h5 class="font-size-26 mb-0 text-primary">Add Coupon</h5>
+                     </b>
+                  </div>
+                  <form class="row" id="addCouponDiscount">
+                     <div class="form-group p-3 bg-light mb-0 d-flex flex-row">
+                        <label for="couponCode" class="font-size-16 mb-0 font-size-16 mb-0 col-md-4 mt-1">Coupon Code
+                           :</label>
+                        <input type="text" class="form-control " id="couponCode">
+                        <input type="hidden" id="oderIdCoupon" name="oderIdCoupon" value=<%- oder._id %>>
+                     </div>
+                     <button type="submit" class="btn btn-primary btn-sm mt-2 ">
+                        Apply
+                     </button>
+                     <a href="/coupons" class="btn btn-success btn-sm mt-2">Find Coupons</a>
+                  </form>
+               <% } %>
+               
+            </div>
+         </div>
+
+
+
+
+
+         <!--  -->
+      </div>
+
+      <!-- end row -->
+
+   </div>
+
+   
+
+   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+   
+
+
+
+
+   <script>
+      $(document).ready(function () {
+         $('#proceedBtn').click(function () {
+            const selectedAddressId = $('input[name="address"]:checked').val();
+            const selectedPaymentMethod = $('input[name="payMethod"]:checked').val();
+
+            if (selectedAddressId && selectedPaymentMethod) {
+               const orderData = {
+                  addressId: selectedAddressId,
+                  paymentMethod: selectedPaymentMethod
+               };
+
+
+               confirmOrder(orderData);
+            } else {
+
+               Toastify({
+                  text: 'Please select address and payment method',
+                  duration: 3000,
+                  gravity: "top",
+                  style: {
+                     background: "linear-gradient(to right, #ff0000, #ff9999)",
+                  }
+               }).showToast();
+            }
+         });
+
+
+         function confirmOrder(data) {
+            console.log('data from the checkout form', data)
+            $.ajax({
+               url: `/orderPlaced/${data.addressId}/${data.paymentMethod}`,
+               type: 'get',
+               success: function (data) {
+                  Toastify({
+                     text: data.msg,
+                     duration: 3000,
+                     gravity: 'top',
+                     position: "center",
+                     style: {
+                        background: "linear-gradient(to right, #00b09b, #96c93d)",
+                     },
+                     stopOnFocus: true,
+                  }).showToast();
+
+                  if (data.paymentMethod == 'cash') {
+                     console.log('cash on delivary');
+                     location.href = '/orderSuccess';
+                  } else if (data.paymentMethod == 'online') {
+                     console.log('razor pay');
+                     createRazorpay(data.order)
+                  } else if (data.paymentMethod == 'wallet') {
+                     console.log('wallet');
+                     location.href = '/orderSuccess'
+                  }
+               },
+               error: function (err) {
+                  Toastify({
+                     text: "Some error occured !! ,Please try again later..",
+                     duration: 3000,
+                     gravity: 'top',
+                     position: 'center',
+                     backgroundColor: 'red',
+                  }).showToast();
+                  console.log(err);
+               }
+            });
+
+         }
+
+         function createRazorpay(order) {
+            console.log('haaai');
+            console.log(order.amount);
+            console.log(order.id);
+            var options = {
+               "key": "rzp_test_EIu4LwyKLdhV1J",
+               "amount": order.amount* 100,
+               "currency": "INR",
+               "name": "PixelPad",
+               "description": "Test Transaction",
+               "image": "https://example.com/your_logo",
+               "order_id": order.id,
+               "handler": function (response) {
+                  
+
+                  verifyPayment(response,order)
+               },
+               
+               
+               "theme": {
+                  "color": "#3399cc"
+               }
+            };
+            console.log('just before razor pay');
+            var rzp1 = new Razorpay(options);
+            rzp1.open();
+         }
+
+
+         function verifyPayment(payment,order){
+            console.log('verify payment...');
+            $.ajax({
+               url : '/verifyPayment',
+               method : 'post',
+               data : {
+                  payment,
+                  order
+               },
+               success : function (response){
+                  console.log(response);
+                  if(response.success){
+                     console.log('hoooi');
+                     location.href = '/orderSuccess'
+                  }
+               },
+               error : function (error){
+                  alert('something went wrong ! ! ')
+                  console.log(error);
+               }
+            })
+         }
+
+         $('#addCouponDiscount').submit(function (event) {
+            console.log('hai');
+            event.preventDefault();
+            const formData = {
+               couponCode : $('#couponCode').val(),
+               orderId : $('#oderIdCoupon').val(),
+            };
+
+            $.ajax({
+                  url: '/applyCoupon',
+                  type: 'POST',
+                  contentType: 'application/json',
+                  data: JSON.stringify(formData),
+                  success: function (data) {
+                     Toastify({
+                        text: data.message,
+                        duration: 3000,
+                        gravity: 'top',
+                        position: "center",
+                        style: {
+                           background: "linear-gradient(to right, #00b09b, #96c93d)",
+                        },
+                        stopOnFocus: true,
+                     }).showToast();
+
+                     // reloadCheckoutPage()
+                     if(data.success){
+                        location.reload();
+                     }
+                     
+                  },
+                  error: function (xhr, textStatus, errorThrown) {
+                     console.error('Error:', errorThrown);
+                     Swal.fire("Error", "Please check the coupon number", "error");
+                  }
+            });
+         });
+
+         function reloadCheckoutPage() {
+            $.ajax({
+               url: '/checkoutReload',
+               type: 'GET',
+               success: function (checkoutContent) {
+                  $('#checkoutContainer').html(checkoutContent);
+               },
+               error: function (xhr, textStatus, errorThrown) {
+                  console.error('Error:', errorThrown);
+                  swal("Error", "Failed to reload coupon list", "error");
+               }
+            });
+         }
+      });
+   </script>
+
+
+   <!-- 
+<script>
+   
+   $(document).ready(function () {
+      $('#addCouponDiscount').submit(function (event) {
+         event.preventDefault();
+         const couponCode = $('#couponCode').val();
+
+         $.ajax({
+            url: '/applyCoupon',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ couponCode: couponCode }), 
+            success: function (data) {
+               Toastify({
+                  text: 'Coupon Applied',
+                  duration: 3000,
+                  gravity: "top",
+                  style: {
+                     background: "linear-gradient(to right, #00b09b, #96c93d)",
+                  }
+               }).showToast();
+            },
+            error: function (xhr, textStatus, errorThrown) {
+               console.error('Error:', errorThrown);
+               Swal.fire("Error", "Plese check the coupon number", "error");
+            }
+         });
+      });
+   });
+</script> -->
+
+
+   <script>
+
+
+      if ("<%= successMessage %>" !== null) {
+         const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+               toast.onmouseenter = Swal.stopTimer;
+               toast.onmouseleave = Swal.resumeTimer;
+            }
+         });
+         Toast.fire({
+            icon: "success",
+            title: successMessage
+         });
+      }
+   </script>
+
+
+
+
+
+
+   <%-include('../partials/userPartials/footer')%>

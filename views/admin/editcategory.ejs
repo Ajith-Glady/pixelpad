@@ -1,0 +1,50 @@
+
+<%-include('../partials/admin/header')%>
+
+
+
+<!--Container Main start-->
+<div class="height-100 bg-light">
+   
+   <div class="container">
+      <h4> 
+         Edit Category
+      </h4>
+      <%if(locals.err){%>
+        <div style="color: red;"><%=locals.err%></div>
+      <%}%>
+      <form action="/admin/editCate/<%- category._id -%>" method="post" onsubmit="return validateForm()">
+         <div class="form-group">
+             <label for="exampleInputEmail1">Category Name</label>
+             <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Enter Category name" name="categoryName" value="<%-category.name-%>" required>
+             <small id="emailHelp" class="form-text text-muted">Edit categories here.</small>
+         </div>
+         <div class="mt-2">
+             <a href="/admin/category"><button type="button" class="btn btn-outline-danger m-2">Cancel</button></a>
+             <button type="submit" class="btn btn-primary">Submit</button>
+         </div>
+     </form>
+   </div>
+
+   
+</div>
+<!--Container Main end-->
+
+<script>
+   function validateForm() {
+       var categoryName = document.getElementById('exampleInputEmail1').value;
+
+       // Check if the category name contains only whitespace
+       if (categoryName.trim() === '') {
+           alert('Category name cannot be empty or contain only whitespace.');
+           return false; // Prevent the form from submitting
+       }
+
+       return true; // Allow the form to submit
+   }
+</script>
+
+
+
+
+<%-include('../partials/admin/footer')%>

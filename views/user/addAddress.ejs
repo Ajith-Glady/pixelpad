@@ -1,0 +1,89 @@
+<%-include('../partials/userPartials/header')%>
+
+
+   <div class="container">
+      <div class="row">
+
+         <div class="col-md-8 mb-4">
+            <div class="card mb-4">
+               <div class="card-header py-3">
+                  <h5 class="mb-0">Address</h5>
+               </div>
+               <div class="card-body">
+                  <form action="/spotAddressAdd" method="post">
+                     <!-- 2 column grid layout with text inputs for the first and last names -->
+                     <div class="row mb-4">
+                        <div class="col">
+                           <div class="form-outline">
+                              <input type="text" id="form7Example1" class="form-control" name="name" required />
+                              <label class="form-label" for="form7Example1">Name</label>
+                           </div>
+                        </div>
+                        <div class="col">
+                           <div class="form-outline">
+                              <input type="number" id="form7Example2" class="form-control" name="mobile" required />
+                              <label class="form-label" for="form7Example2">Phone</label>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row mb-4">
+                        <div class="col">
+                           <div class="form-outline">
+                              <input type="number" id="form7Example1" class="form-control" name="pincode" required />
+                              <label class="form-label" for="form7Example1">Pincode</label>
+                           </div>
+                        </div>
+                        <div class="col">
+                           <div class="form-outline">
+                              <input type="text" id="form7Example2" class="form-control" name="city" required />
+                              <label class="form-label" for="form7Example2">City</label>
+                           </div>
+                        </div>
+                     </div>
+   
+                     <!-- Text input -->
+                     <div class="form-outline mb-4">
+                        <input type="text" id="form7Example3" class="form-control" name="locality" required />
+                        <label class="form-label" for="form7Example3">Locality</label>
+                     </div>
+   
+                     <!-- Text input -->
+                     <div class="form-outline mb-4">
+                        <input type="text" id="form7Example4" class="form-control" name="district" required />
+                        <label class="form-label" for="form7Example4">District</label>
+                     </div>
+   
+                     <!-- Email input -->
+                     <div class="form-outline mb-4">
+                        <input type="text" id="form7Example5" class="form-control" name="state" required />
+                        <label class="form-label" for="form7Example5">State</label>
+                     </div>
+   
+                     <!-- Number input -->
+                     <div class="form-outline mb-4">
+                        <input type="text" id="form7Example6" class="form-control" placeholder="home/office"
+                           name="addressType" required />
+                        <label class="form-label" for="form7Example6">type</label>
+                     </div>
+   
+                     <!-- Message input -->
+                     <div class="form-outline mb-4">
+                        <textarea class="form-control" id="form7Example7" rows="4" name="address" required></textarea>
+                        <label class="form-label" for="form7Example7">Address</label>
+                     </div>
+   
+                     <!-- Checkbox -->
+                     <div class="form-check d-flex justify-content-center mb-2">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+   
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   </body>
+
+   </html>

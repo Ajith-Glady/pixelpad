@@ -1,0 +1,84 @@
+<%-include('../partials/header')%>
+
+<section class="pt-5 pb-5 mt-0 align-items-center d-flex bg-dark"
+style="min-height: 100vh; background-size: cover; background-image: url(https://images.unsplash.com/photo-1477346611705-65d1883cee1e?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1920&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjMyMDc0fQ&amp;s=c0d43804e2c7c93143fe8ff65398c8e9);">
+<div class="container-fluid">
+    <div class="row justify-content-center align-items-center d-flex-row text-center h-100">
+        <div class="col-12 col-md-4 col-lg-3 h-50">
+            <div class="card shadow">
+                <div class="card-body mx-auto">
+                  <%if(locals.err){%>
+                     <div style="color: red;"><%=locals.err%></div>
+                  <%}%>
+                    <h4 class="card-title mt-3 text-center">Login</h4>
+                    <form onsubmit="return validateForm()" action="/admin/adminLogin" method="post">
+                       
+
+                        <div class="form-group input-group mt-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                            </div>
+                            <input id="email" name="email" class="form-control" placeholder="Email address"
+                                type="email" required>
+                            
+                        </div>
+                        <small id="emailError" class="form-text text-danger"></small>
+                        <div class="form-group input-group mt-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="bi bi-shield-lock"></i></span>
+                            </div>
+                            <input id="password" name="password" class="form-control"
+                                placeholder="Create password" type="password" required>
+                            
+                        </div>
+                        <small id="passwordError" class="form-text text-danger"></small>
+
+                        <div class="form-group mt-3">
+                            <button type="submit" class="btn btn-primary btn-block"> Login </button>
+                        </div>
+                        <!-- <p class="text-center">You don't have account? <a href="/signup">Sign Up</a></p> -->
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+<script>
+   function validateForm() {
+     //   const fullNameInput = document.getElementById('fullName');
+       const emailInput = document.getElementById('email');
+       const passwordInput = document.getElementById('password');
+       const passwordError = document.getElementById('passwordError');
+
+       // White space check for Email
+       if (emailInput.value.trim() === '') {
+           emailError.textContent = 'Email cannot be empty or contain only white spaces.';
+           return false;
+       } else {
+           emailError.textContent = '';
+       }
+
+       // Email validation using a regular expression
+       //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+       const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+       if (!emailRegex.test(emailInput.value)) {
+           emailError.textContent = 'Invalid email address';
+           return false;
+       } else {
+           emailError.textContent = '';
+       }
+
+       // White space check for Password
+       if (passwordInput.value.includes(' ')) {
+           passwordError.textContent = 'Password cannot contain white spaces.';
+           return false;
+       } else {
+           passwordError.textContent = '';
+       }
+
+       return true;
+   }
+</script>
+
+   <%-include('../partials/footer')%>

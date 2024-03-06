@@ -1,0 +1,319 @@
+<%-include('../partials/userPartials/header')%>
+
+
+
+<section class="">
+   <div class="container">
+     <div class="row">
+       <!-- sidebar -->
+       <div class="col-lg-3">
+         <!-- Toggle button -->
+         <button
+                 class="btn btn-outline-secondary mb-3 w-100 d-lg-none"
+                 type="button"
+                 data-mdb-toggle="collapse"
+                 data-mdb-target="#navbarSupportedContent"
+                 aria-controls="navbarSupportedContent"
+                 aria-expanded="false"
+                 aria-label="Toggle navigation"
+                 >
+           <span>Show filter</span>
+         </button>
+         <!-- Collapsible wrapper -->
+         <div class="collapse card d-lg-block mb-5" id="navbarSupportedContent">
+
+          <form action="/applyFilter" method="post" id="filterForm">
+
+            <div class="accordion" id="accordionPanelsStayOpenExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button text-dark bg-light" type="button" data-mdb-toggle="collapse"
+                            data-mdb-target="#panelsStayOpen-collapseOne" aria-expanded="true"
+                            aria-controls="panelsStayOpen-collapseOne">
+                            Categories
+                        </button>
+                    </h2>
+                    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
+                        aria-labelledby="headingOne">
+                        <div class="accordion-body">
+                            <div>
+                                <!-- Checked checkbox -->
+                                <% categories.forEach((ele, i) => { %>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="categories" value="<%- ele._id %>"
+                                        id="check<%- i %>">
+                                    <label class="form-check-label text-uppercase" for="check<%- i %>"><%- ele.name %></label>
+                                    <span class="badge badge-secondary float-end">120</span>
+                                </div>
+                                <% }) %>
+        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingThree">
+                        <button class="accordion-button text-dark bg-light" type="button" data-mdb-toggle="collapse"
+                            data-mdb-target="#panelsStayOpen-collapseThree" aria-expanded="false"
+                            aria-controls="panelsStayOpen-collapseThree">
+                            Price
+                        </button>
+                    </h2>
+                    <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse show"
+                        aria-labelledby="headingThree">
+                        <div class="accordion-body">
+                            <div class="range">
+                                <input type="range" class="form-range" id="customRange1" />
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <p class="mb-0">
+                                        Min
+                                    </p>
+                                    <div class="form-outline">
+                                        <input type="number" id="minAmount" name="minPrice" class="form-control" />
+                                        <label class="form-label" for="minAmount">₹0</label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <p class="mb-0">
+                                        Max
+                                    </p>
+                                    <div class="form-outline">
+                                        <input type="number" id="maxAmount" name="maxPrice" class="form-control" />
+                                        <label class="form-label" for="maxAmount">₹10,000</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" id="submitFilter" class="btn btn-white w-100 border border-secondary">Apply</button>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingThree">
+                        <button class="accordion-button text-dark bg-light" type="button" data-mdb-toggle="collapse"
+                            data-mdb-target="#panelsStayOpen-collapseFive" aria-expanded="false"
+                            aria-controls="panelsStayOpen-collapseFive">
+                            Ratings
+                        </button>
+                    </h2>
+                    <div id="panelsStayOpen-collapseFive" class="accordion-collapse collapse show"
+                        aria-labelledby="headingThree">
+                        <div class="accordion-body">
+                            <!-- Default checkbox -->
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked />
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    <i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i
+                                        class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                </label>
+                            </div>
+                            <!-- Default checkbox -->
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked />
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    <i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i
+                                        class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-secondary"></i>
+                                </label>
+                            </div>
+                            <!-- Default checkbox -->
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked />
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    <i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i
+                                        class="fas fa-star text-warning"></i><i class="fas fa-star text-secondary"></i>
+                                    <i class="fas fa-star text-secondary"></i>
+                                </label>
+                            </div>
+                            <!-- Default checkbox -->
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked />
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    <i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i
+                                        class="fas fa-star text-secondary"></i><i class="fas fa-star text-secondary"></i>
+                                    <i class="fas fa-star text-secondary"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+        </form>
+        
+
+
+         </div>
+       </div>
+       <!-- sidebar -->
+       <!-- content -->
+       <div class="col-lg-9">
+         <header class="d-sm-flex align-items-center border-bottom mb-4 pb-3">
+           <strong class="d-block py-2"><%- count -%> Results showing</strong>
+           <div class="ms-auto">
+            <form action="/sortProducts" method="post" class="d-inline-block">
+              <select name="data" class="form-select w-auto border pt-1" onchange="this.form.submit()">
+                  <option value="0">Sort</option>
+                  <option value="name">Name</option>
+                  <option value="price">Price</option>
+                  <option value="date">Date</option>
+              </select>
+            </form>
+             <div class="btn-group shadow-0 border">
+               <a href="#" class="btn btn-light" title="List view">
+                 <i class="fa fa-bars fa-lg"></i>
+               </a>
+               <a href="#" class="btn btn-light active" title="Grid view">
+                 <i class="fa fa-th fa-lg"></i>
+               </a>
+             </div>
+           </div>
+         </header>
+
+
+         <% product.forEach((ele, i) => { %>
+
+          <div class="row justify-content-center mb-3">
+            <div class="col-md-12">
+              <div class="card shadow-0 border rounded-3">
+                <div class="card-body">
+                  <div class="row g-0">
+                    <div class="col-xl-3 col-md-4 d-flex justify-content-center">
+                      <div class="bg-image hover-zoom ripple rounded ripple-surface me-md-3 mb-3 mb-md-0">
+                        <a href="/productDetails/<%- ele._id -%>"><img src="/product_img/<%= ele.images[0] %>" class="w-100" /></a>
+                        <a href="#!">
+                          <div class="hover-overlay">
+                            <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="col-xl-6 col-md-5 col-sm-7">
+                      <a href="/productDetails/<%- ele._id -%>" style="text-decoration: none; color: #000;">
+                        <h5><%- ele.lapName %></h5>
+                      </a>
+                      <div class="d-flex flex-row">
+        
+                      </div>
+        
+                      <p class="text mb-4 mb-md-0">
+                        <%- ele.description %><%- ele.specOne %><%- ele.specTwo %><%- ele.specThree %><%- ele.specFour %>
+                      </p>
+                    </div>
+                    <div class="col-xl-3 col-md-3 col-sm-5">
+                      <div class="d-flex flex-row align-items-center mb-1">
+                        <h4 class="mb-1 me-1">₹<%- ele.discountPrice %></h4>
+                        <span class="text-danger"><s>₹<%- ele.price %></s></span>
+                      </div>
+                      <h6 class="text-success">Free shipping</h6>
+                      <div class="mt-4">
+                        <a href="/productDetails/<%- ele._id -%>" class="btn btn-primary shadow-0">View Item</a>
+                        <button class="btn btn-light border px-2 pt-2 icon-hover addToWishlistBtn" data-product-id="<%- ele._id %>">
+                          <i class="fas fa-heart fa-lg px-1"></i>
+                        </button>
+                        <!-- <a href="/addToCart/<%- ele._id -%>" class="btn btn-light border px-2 pt-2 icon-hover"><i class="fa-solid fa-cart-shopping"></i></a> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+        <% }); %>
+ 
+         
+         <hr />
+ 
+         <!-- Pagination -->
+         <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-3">
+           <ul class="pagination">
+             <li class="page-item disabled">
+               <a class="page-link" href="#" aria-label="Previous">
+                 <span aria-hidden="true">&laquo;</span>
+               </a>
+             </li>
+             <li class="page-item active"><a class="page-link" href="#">1</a></li>
+             <li class="page-item"><a class="page-link" href="#">2</a></li>
+             <li class="page-item"><a class="page-link" href="#">3</a></li>
+             <li class="page-item"><a class="page-link" href="#">4</a></li>
+             <li class="page-item"><a class="page-link" href="#">5</a></li>
+             <li class="page-item">
+               <a class="page-link" href="#" aria-label="Next">
+                 <span aria-hidden="true">&raquo;</span>
+               </a>
+             </li>
+           </ul>
+         </nav>
+         <!-- Pagination -->
+       </div>
+     </div>
+   </div>
+ </section>
+ <!-- sidebar + content -->
+ 
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+<!-- AJAX script -->
+<script>
+  $(document).ready(function() {
+    // Add to Wishlist button click event
+    $('.addToWishlistBtn').click(function(e) {
+      e.preventDefault();
+
+      var productId = $(this).data('product-id');
+
+      $.ajax({
+        type: 'GET',
+        url: `/addToWishlist/${productId}`, // Replace with your actual server endpoint for adding to wishlist
+        data: { productId: productId },
+        success: function(response) {
+          console.log(response);
+          
+          Toastify({
+            text: response.message,
+            duration: 3000,
+            gravity: "top",
+            position : 'center',
+            style: {
+              background: "linear-gradient(to right, #ff111, #ff9999)",
+            }
+          }).showToast();
+        },
+        error: function(error) {
+          console.error(error);
+          // Handle error
+        }
+      });
+    });
+  });
+</script>
+
+
+ <script>
+   function updateMaxPrice() {
+     const priceRange = document.getElementById('priceRange');
+     const maxPriceInput = document.getElementById('maxPrice');
+   
+     maxPriceInput.value = priceRange.value;
+     updateLabel(maxPriceInput);
+   }
+   
+   function updateLabel(input) {
+     const label = document.querySelector(`[for="${input.id}"]`);
+     label.textContent = `₹ ${input.value}`;
+   }
+   </script>
+
+
+
+
+
+<%-include('../partials/userPartials/footer')%>

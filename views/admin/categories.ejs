@@ -1,0 +1,107 @@
+<%-include('../partials/admin/header')%>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+<!--Container Main start-->
+<div class="height-100 bg-light container">
+   <h4> Categories</h4>
+    
+    <% if(categories.length == 0) { %>
+      <div class="text-center">
+         <h5 class="text-danger">Category is Empty</h5>
+      </div>
+      <% } %>
+      <table class="table mt-5">
+         <tbody>
+             <% categories.forEach((ele) => { %>
+                 <tr>
+                     <td class="text-uppercase"><%- ele.name %></td>
+                     <td>
+                         <a href="/admin/editCate/<%- ele._id -%>"><button type="button" class="btn btn-warning btn-sm">Edit</button></a>
+                         <!-- <a href="/admin/deleteCate/<%- ele._id -%>"><button type="button" class="btn btn-primary btn-sm ml-1">Remove</button></a> -->
+                         <% if(ele.status == 'listed'){ %>
+                            <button type="button" onclick="unlistCategory(`<%- ele._id%>`)" class="btn btn-primary btn-sm ml-1">Unlist</button>
+                         <% }else{ %>
+                            <button type="button" onclick="listCategory(`<%- ele._id%>`)" class="btn btn-primary btn-sm ml-1">List</button>
+                         <% } %>
+                         
+                     </td>
+                 </tr>
+             <% }); %>
+             <tr>
+                 <td colspan="3">
+                     <a href="/admin/addCate">
+                         <button type="button" class="btn btn-success btn-sm">Add Category</button>
+                     </a>
+                 </td>
+             </tr>
+         </tbody>
+     </table>
+     
+      
+</div>
+<!--Container Main end-->
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    function unlistCategory(categoryId) {
+        console.log('hoi hoi', categoryId);
+        $.ajax({
+            url: `/admin/unlistCategory/${categoryId}`,
+            type: 'GET',
+            success: function(response) {
+                if (response.success) {
+                    Toastify({
+                        text: 'Category unlisted successfully',
+                        duration: 3000,
+                        gravity: 'top',
+                        position: 'center',
+                        backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)'
+                    }).showToast();
+
+                    setTimeout(() => {
+                        location.reload();
+                    }, 3000);
+                } else {
+                    console.error('Failed to unlist category');
+                }
+            },
+            error: function(xhr, textStatus, errorThrown) {
+                console.error('Error:', errorThrown);
+            }
+        });
+    }
+
+    function listCategory(categoryId) {
+        console.log('ajith', categoryId);
+        $.ajax({
+            url: `/admin/listCategory/${categoryId}`,
+            type: 'GET',
+            success: function(response) {
+                if (response.success) {
+                    Toastify({
+                        text: 'Category listed successfully',
+                        duration: 3000,
+                        gravity: 'top',
+                        position: 'center',
+                        backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)'
+                    }).showToast();
+
+                    setTimeout(() => {
+                        location.reload();
+                    }, 3000);
+                } else {
+                    console.error('Failed to list category');
+                }
+            },
+            error: function(xhr, textStatus, errorThrown) {
+                console.error('Error:', errorThrown);
+            }
+        });
+    }
+</script>
+
+
+<%-include('../partials/admin/footer')%>

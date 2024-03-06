@@ -1,0 +1,134 @@
+<%-include('../partials/userPartials/header')%>
+
+<link rel="stylesheet" href='/styles/wishList.css'>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+<div class="container padding-bottom-3x mb-2">
+   <div class="row">
+      <div class="col-lg-8">
+         <div class="padding-top-2x mt-2 hidden-lg-up"></div>
+         <!-- Wishlist Table-->
+         <div class="table-responsive wishlist-table margin-bottom-none">
+            <table class="table">
+               <thead>
+                  <tr>
+                     <th>Product Name</th>
+                     <th class="text-center">
+                        <a class="btn btn-sm btn-outline-danger" href="#">Clear Wishlist</a>
+                     </th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <% wishlist.products.forEach((ele,j)=> { %>
+                  <tr>
+                     <td>
+                        <div class="product-item">
+                           <a class="product-thumb" href="#"><img src="/product_img/<%= ele.productId.images[0] %>" alt="Product"></a>
+                           <div class="product-info">
+                              <h4 class="product-title"><a href="#"><%= ele.productId.lapName %></a></h4>
+                              <div class="text-lg text-medium text-muted"><del>₹<%- ele.productId.price %></del><b>₹<%- ele.productId.discountPrice %></b></div>
+                              <div>Availability:
+                                 <% if(ele.productId.stock > 0){ %>
+                                    <div class="d-inline text-success">In Stock</div>
+                                 <% }else{ %>
+                                    <div class="d-inline text-danger">Out of Stock</div>
+                                 <% } %>
+                              </div>
+                           </div>
+                        </div>
+                     </td>
+                     <td class="text-center">
+                        <div class="d-flex justify-content-between">
+                           <a href="#" class="btn btn-primary add-to-cart" data-id="<%= ele.productId._id %>">Add to Cart</a>
+                           <a href="#" class="btn btn-danger delete-item" data-id="<%= ele.productId._id %>">Delete</a>
+                        </div>
+                     </td>
+                  </tr>
+                  <% }) %>
+               </tbody>
+            </table>
+         </div>
+      </div>
+   </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+<script>
+   $(document).ready(function() {
+      // Add to Cart functionality
+      $('.add-to-cart').click(function(e) {
+         e.preventDefault();
+         var productId = $(this).data('id');
+         console.log('product id :',productId);
+         $.ajax({
+            url: `/addToCartWish/${productId}`,
+            type: 'GET',
+            success: function(response) {
+               // Handle success
+               console.log('response:', response);
+               Toastify({
+                  text: response.message,
+                  duration: 3000,
+                  gravity: "top",
+                  position: 'center',
+                  style: {
+                     background: "linear-gradient(to right, #ff000, #ff9999)",
+                  }
+               }).showToast();
+            },
+            error: function(xhr, status, error) {
+               // Handle error
+               console.error(error);
+               Toastify({
+                  text: 'Error occurred while adding to cart',
+                  duration: 3000,
+                  gravity: "top",
+                  position: 'center',
+                  backgroundColor: "red",
+               }).showToast();
+            }
+         });
+      });
+
+      // Delete functionality
+      $('.delete-item').click(function(e) {
+         e.preventDefault();
+         var productId = $(this).data('id');
+         console.log('product id:',productId);
+         $.ajax({
+            url: `/deleteWishlistItem/${productId}`,
+            type: 'DELETE',
+            success: function(response) {
+               
+               console.log('response:', response);
+               Toastify({
+                  text: 'Item deleted',
+                  duration: 3000,
+                  gravity: "top",
+                  position: 'center',
+                  backgroundColor: "green",
+               }).showToast();
+               
+               setTimeout(() => {
+                  location.reload()
+               },3200)
+            },
+            error: function(xhr, status, error) {
+               // Handle error
+               console.error(error);
+               Toastify({
+                  text: 'Error occurred while deleting item',
+                  duration: 3000,
+                  gravity: "top",
+                  position: 'center',
+                  backgroundColor: "red",
+               }).showToast();
+            }
+         });
+      });
+   });
+</script>
+
+<%-include('../partials/userPartials/footer')%>

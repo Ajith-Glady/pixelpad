@@ -1,0 +1,126 @@
+<%-include('../partials/userPartials/header')%>
+
+
+
+<style>
+   .card {
+   
+      width: 300px;
+      border: none;
+      height: 320px;
+      border-radius: 15px;
+      padding: 20px;
+      background-color: #D50000;
+   }
+   
+   .percent {
+   
+      font-size: 56px;
+      color: #fff;
+   }
+   
+   .discount {
+   
+      font-size: 27px;
+      color: #fff;
+   }
+   
+   
+   .line {
+   
+      color: #fff;
+   }
+   
+   
+   
+   .form-check-input:checked {
+      background-color: #F44336;
+      border-color: #F44336;
+   }
+   
+   
+   .form-check-input:focus {
+      border-color: #d50000;
+      outline: 0;
+      box-shadow: none;
+   }
+   
+   
+   .form-check {
+      display: block;
+      min-height: 1.5rem;
+      padding-left: 1.75em;
+      margin-bottom: -5px;
+   }
+</style>
+
+
+
+
+
+<div class="container">
+   <h4> Coupons</h4>
+   <div class="row">
+      <% cupn.forEach(ele => { %>
+         <div class="col-md-3">
+            <div class="card mt-3">
+               <div class="text-center">
+                  <div class="d-flex flex-row text-center">
+                     <div class="d-flex flex-column ml-1">
+                        <h1 class="mb-0 percent">₹<%= ele.discountAmount %></h1>
+                        <span class="discount">Discount</span>
+                     </div>
+                  </div>
+               </div>
+               <hr class="line">
+               <span class="text-white mt-2">on minimum purchase of ₹<%= ele.minPurchaseAmount %></span>
+               <span class="text-white mt-2">Validity : <b><%= new Date(ele.expiryDate).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) %></b></span>
+               <span class="text-white mt-2">Apply Code : 
+                  <button class="copy-code-btn badge bg-info text-dark" data-code="<%= ele.couponCode %>">
+                     <%= ele.couponCode %>
+                  </button>
+               </span>
+               <div class="d-flex justify-content-between align-items-center mt-4">
+                  
+               </div>
+            </div>
+         </div>
+      <% }) %>
+   </div>
+</div>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+   const copyButtons = document.querySelectorAll('.copy-code-btn');
+   copyButtons.forEach(button => {
+      button.addEventListener('click', function() {
+         const codeToCopy = this.getAttribute('data-code');
+         navigator.clipboard.writeText(codeToCopy)
+            .then(() => {
+               
+               Toastify({
+                  text: 'Coupon code copied',
+                  duration: 3000,
+                  gravity: "top",
+                  position: "center",
+                  style: {
+                     background: "linear-gradient(to right, #ff0000, #ff9999)",
+                  }
+               }).showToast();
+            })
+            .catch(err => {
+               console.error('Failed to copy: ', err);
+            });
+      });
+   });
+});
+</script>
+
+
+
+
+
+
+
+<%-include('../partials/userPartials/footer')%>

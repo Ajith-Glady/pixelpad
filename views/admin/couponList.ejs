@@ -1,0 +1,354 @@
+<%-include('../partials/admin/header')%>
+
+
+
+<style>
+.card {
+
+   width: 300px;
+   border: none;
+   height: 320px;
+   border-radius: 15px;
+   padding: 20px;
+   background-color: #D50000;
+}
+
+.percent {
+
+   font-size: 56px;
+   color: #fff;
+}
+
+.discount {
+
+   font-size: 27px;
+   color: #fff;
+}
+
+
+.line {
+
+   color: #fff;
+}
+
+
+
+.form-check-input:checked {
+   background-color: #F44336;
+   border-color: #F44336;
+}
+
+
+.form-check-input:focus {
+   border-color: #d50000;
+   outline: 0;
+   box-shadow: none;
+}
+
+
+.form-check {
+   display: block;
+   min-height: 1.5rem;
+   padding-left: 1.75em;
+   margin-bottom: -5px;
+}
+</style>
+<div class="container">
+   <h4> Coupons</h4>
+   <button type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Add Coupon
+   </button>
+   <div class="row">
+      <% cupn.forEach(ele=> { %>
+         <div class="col-md-3">
+            <div class="card mt-3">
+               <div class="text-center">
+                  <div class="d-flex flex-row text-center">
+                     <!-- <img src="https://i.imgur.com/bIgSEvT.png" width="70"> -->
+                     <div class="d-flex flex-column ml-1">
+                        <h1 class="mb-0 percent">₹<%= ele.discountAmount %>
+                        </h1>
+                        <span class="discount">Discount</span>
+                     </div>
+                  </div>
+               </div>
+               <hr class="line">
+               <span class="text-white">on minimum purchase of ₹<%= ele.minPurchaseAmount %></span>
+               <span class="text-white">Validity : <b>
+                     <%= new Date(ele.expiryDate).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) %>
+                  </b></span>
+               <span class="text-white">Apply Code : <span class="badge bg-info text-dark">
+                     <%= ele.couponCode %>
+                  </span></span>
+               <div class="d-flex justify-content-between align-items-center mt-4">
+                  <!-- <span class="text-white">Active</span>
+               <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+               </div> -->
+               </div>
+               <div class="d-flex justify-content-between align-items-center mt-4">
+                  <a onclick="deleteCoupon('<%- ele._id %>')"><i class="bi bi-trash3 text-light"></i></a>
+                  <!-- <a onclick="editCoupon('<%- ele._id %>')"><i class="bi bi-pencil-square text-light"></i></a> -->
+                  <a onclick="editCoupon('<%- ele._id %>')"><i class="bi bi-pencil-square text-light"></i></a>
+
+               </div>
+            </div>
+         </div>
+      <% }) %>
+   </div>
+</div>
+
+
+
+
+<!-- Add Coupon Modal -->
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add Coupon</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+         </div>
+         <div class="modal-body">
+            <form id="addCouponForm">
+               <div class="mb-3">
+                  <label for="couponCode" class="form-label">Coupon Code</label>
+                  <input type="text" class="form-control" id="couponCode" required>
+               </div>
+               <div class="mb-3">
+                  <label for="minPurchase" class="form-label">Minimum Purchase Amount</label>
+                  <input type="number" class="form-control" id="minPurchase" required>
+               </div>
+               <div class="mb-3">
+                  <label for="discountAmount" class="form-label">Discount Amount</label>
+                  <input type="number" class="form-control" id="discountAmount" required>
+               </div>
+               <div class="mb-3">
+                  <label for="expireDate" class="form-label">Expire Date</label>
+                  <input type="date" class="form-control" id="expireDate" required>
+               </div>
+               <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+
+
+
+<!-- Edit coupon Modal -->
+
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="editModalLabel">Edit Coupon</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+         </div>
+         <div class="modal-body">
+            <form id="editCouponForm">
+               <input type="hidden" id="editCouponId" name="editCouponId">
+               <div class="mb-3">
+                  <label for="editCouponCode" class="form-label">Coupon Code</label>
+                  <input type="text" class="form-control" id="editCouponCode" required>
+               </div>
+               <div class="mb-3">
+                  <label for="editMinPurchase" class="form-label">Minimum Purchase Amount</label>
+                  <input type="number" class="form-control" id="editMinPurchase" required>
+               </div>
+               <div class="mb-3">
+                  <label for="editDiscountAmount" class="form-label">Discount Amount</label>
+                  <input type="number" class="form-control" id="editDiscountAmount" required>
+               </div>
+               <div class="mb-3">
+                  <label for="editExpireDate" class="form-label">Expire Date</label>
+                  <input type="date" class="form-control" id="editExpireDate" required>
+               </div>
+               <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+
+
+
+
+
+
+<!-- Include Bootstrap Bundle with Popper, jQuery, and SweetAlert -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+   // Function to handle adding a coupon
+   function addCoupon() {
+      $('#addCouponForm').submit(function (event) {
+         event.preventDefault();
+
+         const formData = {
+            couponCode: $('#couponCode').val(),
+            minPurchaseAmount: $('#minPurchase').val(),
+            discountAmount: $('#discountAmount').val(),
+            expiryDate: $('#expireDate').val(),
+         };
+
+         $('#exampleModal').modal('hide');
+
+         $.ajax({
+            url: '/admin/addCoupon',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            success: function (data) {
+               if(data.success){
+                  Swal.fire("Success", "Coupon added successfully", "success");
+               }else{
+                  Swal.fire({
+                     title: "Oops",
+                     text: "This coupon code is already exists",
+                     icon: "error" 
+                  });
+               }
+               setTimeout(() => {
+                  location.reload();
+               },3000)
+            },
+            error: function (xhr, textStatus, errorThrown) {
+               console.error('Error:', errorThrown);
+               Swal.fire("Error", "Failed to add coupon", "error");
+            }
+         });
+      });
+   }
+
+   // Function to handle deleting a coupon
+   function deleteCoupon(couponId) {
+      Swal.fire({
+         title: "Are you sure?",
+         text: "You won't be able to revert this!",
+         icon: "warning",
+         showCancelButton: true,
+         confirmButtonColor: "#3085d6",
+         cancelButtonColor: "#d33",
+         confirmButtonText: "Yes, delete it!"
+      }).then((result) => {
+         if (result.isConfirmed) {
+            $.ajax({
+               url: `/admin/deleteCoupon/${couponId}`,
+               type: 'GET',
+               success: function (data) {
+                  Swal.fire("Success", "Coupon Deleted successfully", "success");
+                  // reloadCouponList();
+                  setTimeout(() => {
+                     location.reload();
+                  },3000)
+               },
+               error: function (xhr, textStatus, errorThrown) {
+                  console.error('Error : ', errorThrown);
+                  Swal.fire("Error", "Failed to delete coupon", "error");
+               }
+            })
+         }
+      });
+   }
+
+   // Function to handle editing a coupon
+   function editCoupon(couponId) {
+      $.ajax({
+         url: `/admin/editCoupon/${couponId}`,
+         type: 'GET',
+         success: function (data) {
+            $('#editCouponId').val(data._id);
+            $('#editCouponCode').val(data.couponCode);
+            $('#editMinPurchase').val(data.minPurchaseAmount);
+            $('#editDiscountAmount').val(data.discountAmount);
+            $('#editExpireDate').val(data.expiryDate);
+            $('#editModal').modal('show');
+         },
+         error: function (xhr, textStatus, errorThrown) {
+            console.error('Error:', errorThrown);
+            swal("Error", "Failed to load coupon data for editing", "error");
+         }
+      });
+   }
+
+   // Function to handle editing coupon form submission
+   function patchEditCoupon() {
+      $('#editCouponForm').submit(function (event) {
+         event.preventDefault();
+
+         const formData = {
+            _id: $('#editCouponId').val(),
+            couponCode: $('#editCouponCode').val(),
+            minPurchaseAmount: $('#editMinPurchase').val(),
+            discountAmount: $('#editDiscountAmount').val(),
+            expiryDate: $('#editExpireDate').val(),
+         };
+
+         $('#editModal').modal('hide');
+
+         $.ajax({
+            url: '/admin/editCoupon',
+            type: 'PATCH',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            success: function (data) {
+               if(data.success){
+                  Swal.fire("Success", "Coupon Edited successfully", "success");
+               }else{
+                  Swal.fire({
+                     title: "Oops",
+                     text: "This coupon code is already exists",
+                     icon: "error" 
+                  });
+               }
+               
+               // reloadCouponList();
+               setTimeout(() => {
+                  location.reload();
+               },3000)
+            },
+            error: function (xhr, textStatus, errorThrown) {
+               console.error('Error:', errorThrown);
+               Swal.fire("Error", "Failed to edit coupon", "error");
+            }
+         });
+      });
+   }
+
+   // Function to reload the coupon list
+   function reloadCouponList() {
+      $.ajax({
+         url: '/admin/coupon',
+         type: 'GET',
+         success: function (data) {
+            $('.container').html(data);
+         },
+         error: function (xhr, textStatus, errorThrown) {
+            console.error('Error:', errorThrown);
+            swal("Error", "Failed to reload coupon list", "error");
+         }
+      });
+   }
+
+   // Document ready function to bind event listeners
+   $(document).ready(function () {
+      addCoupon();
+      patchEditCoupon();
+   });
+</script>
+
+
+
+
+
+
+<%-include('../partials/admin/footer')%>

@@ -1,0 +1,335 @@
+<%-include('../partials/userPartials/header')%>
+
+<style>
+   body{
+    background: #f7f7ff;
+    margin-top:20px;
+}
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 0 solid transparent;
+    border-radius: .25rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 6px 0 rgb(218 218 253 / 65%), 0 2px 6px 0 rgb(206 206 238 / 54%);
+}
+.me-2 {
+    margin-right: .5rem!important;
+}
+</style>
+
+
+
+
+<div class="container mt-5">
+   <div class="main-body">
+      <div class="row">
+         <div class="col-lg-4">
+            <div class="card">
+               <div class="card-body">
+                  <div class="d-flex flex-column align-items-center text-center">
+                     <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="Admin" class="rounded-circle p-1 bg-primary" width="110">
+                     <div class="mt-3">
+                        <h4 class="text-uppercase"><%- data.name %></h4>
+                        <p class="text-secondary mb-1"><%- data.email%></p>
+                        <!-- <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
+                        <button class="btn btn-primary">Follow</button>
+                        <button class="btn btn-outline-primary">Message</button> -->
+                     </div>
+                  </div>
+                  <hr class="my-4">
+                  <ul class="list-group list-group-flush">
+                     <a href="/showAddress" style="text-decoration: none;">
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                           <h6 class="mb-0"><i class="fa-regular fa-address-book"></i>&nbsp; Address</h6>
+                           <span class="text-secondary"></span>
+                        </li>
+                     </a>
+                     <a href="/changePassword" style="text-decoration: none;">
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                           <h6 class="mb-0"><i class="fa-solid fa-lock"></i>&nbsp; Change Password</h6>
+                           <span class="text-secondary"></span>
+                        </li>
+                     </a>
+                     <a href="/wishList" style="text-decoration: none;">
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                           <h6 class="mb-0"><i class="fa-solid fa-heart" style="color: #f41f1f;"></i>&nbsp; Wishlist</h6>
+                           <span class="text-secondary"></span>
+                        </li>
+                     </a>
+                     <a href="/myOrders" style="text-decoration: none;">
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                           <h6 class="mb-0"><i class="fa-solid fa-cart-shopping" style="color: #3500f5;"></i>&nbsp; My Orders</h6>
+                           <span class="text-secondary"></span>
+                        </li>
+                     </a>
+                     <a href="/logout" style="text-decoration: none;">
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                           <h6 class="mb-0"> <i class="fa-solid fa-arrow-right-from-bracket" style="color: #f41f1f;"> </i> &nbsp; Logout</h6>
+                           <span class="text-secondary"></span>
+                        </li>
+                     </a>
+                  </ul>
+               </div>
+            </div>
+         </div>
+         <div class="col-lg-8">
+            <% if(page == 'profile') {%>
+               <div class="card">
+            <% }else{ %>
+               <div class="card" style="display: none;">
+            <% } %>
+            
+               <div class="card-body">
+                  <form action="/editUser" method="post">
+                     <div class="row mb-3">
+                        <div class="col-sm-3">
+                           <h6 class="mb-0">Full Name</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                           <input type="text" class="form-control" value="<%- data.name %>" name="name">
+                        </div>
+                     </div>
+                     <div class="row mb-3">
+                        <div class="col-sm-3">
+                           <h6 class="mb-0">Email</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                           <input type="text" class="form-control" value="<%- data.email %>" readonly name="email">
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-sm-3"></div>
+                        <div class="col-sm-9 text-secondary">
+                           <input type="submit" class="btn btn-primary px-4" value="Save Changes" onclick="showAlert()">
+                        </div>
+                     </div>
+                  </form>
+               </div>
+            </div>
+            
+
+
+
+            <% if(page == 'showAddress') {%>
+               <div class="row">
+            <% }else{ %>
+               <div class="row" style="display: none;">
+            <% } %>
+               <div class="col-md-8 mb-4">
+                 <div class="card mb-4">
+                   <div class="card-header py-3">
+                     <h5 class="mb-0">Address</h5>
+                   </div>
+                   <div class="card-body">
+                     
+                        <% if(address.length>0){%>
+                           <% address.forEach(ele => { %>
+                           <div class="m-4 border custom-border p-3">
+                              <ul>
+                                 <li>Name : <%- ele.name %></li>
+                                 <li>Mobile : <%- ele.mobile %></li>
+                                 <!-- <li>Email : <%- ele.name %></li> -->
+                                 <li>Address : <%- ele.address %></li>
+                                 <li>Pincode : <%- ele.pincode %></li>
+                                 <li>Locality : <%- ele.locality %></li>
+                                 <li>City : <%- ele.city %></li>
+                                 <li>District : <%- ele.district %></li>
+                                 <li>state : <%- ele.state %></li>
+                              </ul>
+                              <a href="javascript:void(0);" onclick="confirmDelete('<%- ele._id %>')">
+                                 <i class="far fa-trash-can" style="color: red;"></i>
+                              </a>
+                           </div>
+                           <% }) %>
+                        <% }else{ %>
+                           <h4 class="text-danger">No address</h4>
+                        <% } %>
+
+                       
+                     
+                     <div class="col-sm-9 text-secondary p-4">
+                        <a href="/addAddress"><input type="button" class="btn btn-primary px-4" value="Add address"></a>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+             </div>
+            
+
+
+            <% if(page == 'addAddress') {%>
+               <div class="row">
+            <% }else{ %>
+               <div class="row" style="display: none;">
+            <% } %>
+               <div class="col-md-8 mb-4">
+                 <div class="card mb-4">
+                   <div class="card-header py-3">
+                     <h5 class="mb-0">Address</h5>
+                   </div>
+                   <div class="card-body">
+                     <form action="/addAddress" method="post">
+                       <!-- 2 column grid layout with text inputs for the first and last names -->
+                       <div class="row mb-4">
+                         <div class="col">
+                           <div class="form-outline">
+                             <input type="text" id="form7Example1" class="form-control" name="name" required/>
+                             <label class="form-label" for="form7Example1">Name</label>
+                           </div>
+                         </div>
+                         <div class="col">
+                           <div class="form-outline">
+                             <input type="number" id="form7Example2" class="form-control" name="mobile" required/>
+                             <label class="form-label" for="form7Example2">Phone</label>
+                           </div>
+                         </div>
+                       </div>
+                       <div class="row mb-4">
+                         <div class="col">
+                           <div class="form-outline">
+                             <input type="number" id="form7Example1" class="form-control" name="pincode" required/>
+                             <label class="form-label" for="form7Example1">Pincode</label>
+                           </div>
+                         </div>
+                         <div class="col">
+                           <div class="form-outline">
+                             <input type="text" id="form7Example2" class="form-control" name="city" required/>
+                             <label class="form-label" for="form7Example2">City</label>
+                           </div>
+                         </div>
+                       </div>
+             
+                       <!-- Text input -->
+                       <div class="form-outline mb-4">
+                         <input type="text" id="form7Example3" class="form-control" name="locality" required/>
+                         <label class="form-label" for="form7Example3">Locality</label>
+                       </div>
+             
+                       <!-- Text input -->
+                       <div class="form-outline mb-4">
+                         <input type="text" id="form7Example4" class="form-control" name="district" required/>
+                         <label class="form-label" for="form7Example4">District</label>
+                       </div>
+             
+                       <!-- Email input -->
+                       <div class="form-outline mb-4">
+                         <input type="text" id="form7Example5" class="form-control" name="state" required/>
+                         <label class="form-label" for="form7Example5">State</label>
+                       </div>
+             
+                       <!-- Number input -->
+                       <div class="form-outline mb-4">
+                         <input type="text" id="form7Example6" class="form-control" placeholder="home/office" name="addressType" required/>
+                         <label class="form-label" for="form7Example6">type</label>
+                       </div>
+             
+                       <!-- Message input -->
+                       <div class="form-outline mb-4">
+                         <textarea class="form-control" id="form7Example7" rows="4" name="address" required></textarea>
+                         <label class="form-label" for="form7Example7">Address</label>
+                       </div>
+             
+                       <!-- Checkbox -->
+                       <div class="form-check d-flex justify-content-center mb-2">
+                        <button type="submit" class="btn btn-primary">Submit</button>                                                                                       
+
+                       </div>
+                     </form>
+                   </div>
+                 </div>
+               </div>
+             </div>
+
+
+             <!-- change password -->
+
+            <% if(page == 'changePassword') {%>
+               <div class="card">
+            <% }else{ %>
+               <div class="card" style="display: none;">
+            <% } %>
+             <% if(err){ %>
+               <h4 class="text-danger "><%-err%></h4>
+             <% } %>
+               <div class="card-body">
+                  <form action="/changePassword" method="post">
+                     <div class="row mb-3">
+                        <div class="col-sm-3">
+                           <h6 class="mb-0">Old Password</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                           <input type="password" class="form-control" value="" name="oldPassword">
+                        </div>
+                     </div>
+                     <div class="row mb-3">
+                        <div class="col-sm-3">
+                           <h6 class="mb-0">New Password</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                           <input type="text" class="form-control" value=""  name="newPassword">
+                        </div>
+                     </div>
+                     <div class="row mb-3">
+                        <div class="col-sm-3">
+                           <h6 class="mb-0">Confirm Password</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                           <input type="password" class="form-control" value=""  name="confirmPassword">
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-sm-3"></div>
+                        <div class="col-sm-9 text-secondary">
+                           <input type="submit" class="btn btn-primary px-4" value="Save Changes" ">
+                        </div>
+                     </div>
+                  </form>
+               </div>
+             </div>
+
+
+             
+
+
+
+
+         </div>
+      </div>
+   </div>
+</div>
+
+
+
+
+
+
+<script>
+   function confirmDelete(addressId) {
+       var isConfirmed = confirm("Are you sure you want to delete this address?");
+       if (isConfirmed) {
+           // Redirect to the delete address route
+           window.location.href = '/deleteAddress/' + addressId;
+       } else {
+           // User clicked "Cancel," no further action needed
+       }
+   }
+</script>
+<script>
+   function showAlert() {
+    Swal.fire({
+      icon: 'success',
+      title: 'Success',
+      text: 'Name updated',
+      timer : 1500
+    });
+  }
+</script>
+
+
+<%-include('../partials/userPartials/footer')%>

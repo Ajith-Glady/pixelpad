@@ -1,0 +1,65 @@
+<%-include('../partials/userPartials/header')%>
+
+
+
+
+
+
+<div class="container">
+   <h2>
+      Wallet
+   </h2>
+   <div class="row">
+      <div class="col-md-8">
+         <table class="table mt-5">
+            <thead>
+                <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Reason</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Type</th>
+                </tr>
+            </thead>
+
+            <% walletHistry.refund.slice(startIndex, endIndex).forEach((ele, index) => { %>
+               <tbody>
+                  <tr>
+                     <th scope="row"><%= startIndex + index + 1 %></th>
+                     <td><%- ele.amount %></td>
+                     <td><%- ele.reason %></td>
+                     <td><%- ele.date.toDateString() %></td>
+                     <td><%- ele.type %></td>
+                  </tr>
+               </tbody>
+            <% }) %>
+        </table>
+
+        <% if (pages > 1) { %>
+            <nav aria-label="Page navigation">
+               <ul class="pagination">
+                  <% for (let i = 1; i <= pages; i++) { %>
+                     <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                        <a class="page-link" href="/wallet?page=<%= i %>"><%= i %></a>
+                     </li>
+                  <% } %>
+               </ul>
+            </nav>
+        <% } %>
+      </div>
+      <div class="col-md-4">
+         <div class="card p-4 mt-5">
+            <div class="p-3 bg-light mb-0">
+               <h5 class="font-size-16 mb-0">Wallet Total : <span class="float-end ms-2 text-primary">₹ <%= walletAmount %></span></h5>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+
+
+
+
+<%-include('../partials/userPartials/footer')%>

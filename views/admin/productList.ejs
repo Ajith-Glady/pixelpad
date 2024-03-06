@@ -1,0 +1,71 @@
+<%- include('../partials/admin/header') %>
+
+<!-- Container Main start -->
+<div class="height-100 bg-light container">
+   <div class="d-flex align-items-center m-2 pt-3">
+      <h4 class="mr-auto"> Products</h4>
+      <a href="/admin/addProduct"><button type="button" class="btn btn-primary ">Add products</button></a>
+   </div>
+   <table class="table mt-5">
+       <thead>
+           <tr>
+               <th scope="col">No</th>
+               <th scope="col">Image</th>
+               <th scope="col">Name</th>
+               <th scope="col">Price</th>
+               <th scope="col">Stock</th>
+               <th scope="col">Block/Unblock</th>
+               <th scope="col">Edit</th>
+               <th scope="col">Delete</th>
+           </tr>
+       </thead>
+       <tbody>
+         <% products.forEach((ele, i) => { %>
+            <tr>
+               <th scope="row"><%= i + 1 %></th>
+                <th><img src="/product_img/<%= ele.images[0] %>" alt="" style="width: 80px; height: 80px;"></th>
+                <td><%- ele.lapName %></td>
+                <td><%- ele.price %></td>
+                <td><%- ele.stock %></td>
+                <% if(ele.status == 'active') { %>
+                  <td><a href="/admin/blockProduct/<%- ele._id -%>"><button type="button" class="btn btn-primary btn-sm">Block</button></a></td>
+                <% }else if(ele.status == 'unlisted') { %>
+                  <td><span class="badge bg-danger">Unlisted</span></td>
+                <% }else { %>
+                  <td><a href="/admin/unblockProduct/<%- ele._id -%>"><button type="button" class="btn btn-primary btn-sm">Unblock</button></a></td>
+               <% } %>
+               <td><a href="/admin/editProduct/<%- ele._id -%>"><i class="bi bi-pencil-square"></i></a></td>
+               <td><a href="/admin/deleteProduct/<%- ele._id -%>"><i class="bi bi-trash-fill"></i></a></td>
+            </tr>
+        <% }); %>
+       </tbody>
+   </table>
+
+   <!-- Pagination -->
+   <nav aria-label="Page navigation">
+     <ul class="pagination justify-content-center">
+       <% if (currentPage > 1) { %>
+         <li class="page-item">
+           <a class="page-link" href="/admin/productList?page=<%= currentPage - 1 %>" aria-label="Previous">
+             <span aria-hidden="true">&laquo;</span>
+           </a>
+         </li>
+       <% } %>
+       <% for (let i = 1; i <= totalPages; i++) { %>
+         <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+           <a class="page-link" href="/admin/productList?page=<%= i %>"><%= i %></a>
+         </li>
+       <% } %>
+       <% if (currentPage < totalPages) { %>
+         <li class="page-item">
+           <a class="page-link" href="/admin/productList?page=<%= currentPage + 1 %>" aria-label="Next">
+             <span aria-hidden="true">&raquo;</span>
+           </a>
+         </li>
+       <% } %>
+     </ul>
+   </nav>
+ </div>
+ <!-- Container Main end -->
+
+<%- include('../partials/admin/footer') %>
