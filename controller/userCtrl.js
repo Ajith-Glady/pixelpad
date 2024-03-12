@@ -9,12 +9,16 @@ const wallet = require('../models/walletModel')
 const walletHistory = require('../models/walletHistoryModel')
 
 module.exports = {
-   getGustPage : (req,res) => {
-      res.render('user/userHome',{user : req.session.user});
+   getGustPage : async(req,res) => {
+      const pro = await products.find({status : 'active'}).sort({ createdAt: -1 }).limit(4)
+      console.log('products :',pro);
+      res.render('user/userHome',{user : req.session.user,pro});
    },
    
-   getHomePage : (req,res)=> {
-      res.render('user/userHome',{user : req.session.user})
+   getHomePage :async(req,res)=> {
+      const pro = await products.find({status : 'active'}).sort({ createdAt: -1 }).limit(4)
+      console.log('products :',pro);
+      res.render('user/userHome',{user : req.session.user,pro})
    },
 
    getProductPage :async (req,res) => {
@@ -27,7 +31,7 @@ module.exports = {
          const [product, count ,categories , wish] = await Promise.all([
             products.find({ status: 'active' }),
             products.find({ status: 'active' }).count(),
-            category.find(),
+            category.find({ status : 'listed'}),
             wishList.find({userId : req.session.userdetails._id})
           ]);
 

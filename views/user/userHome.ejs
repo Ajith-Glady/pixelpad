@@ -66,7 +66,7 @@ a:hover {
 }
 
 .section-products #product-1 .part-1::before {
-    background: url("/img/msi-normal-1.jpg") no-repeat center;
+    /* background: url("/img/msi-normal-1.jpg") no-repeat center; */
     background-size: cover;
 		transition: all 0.3s;
 }
@@ -142,6 +142,7 @@ a:hover {
 
 .section-products .single-product .part-2 .product-title {
     font-size: 1rem;
+    padding-left: 7px;
 }
 
 .section-products .single-product .part-2 h4 {
@@ -219,84 +220,33 @@ a:hover {
                <div class="col-md-8 col-lg-6">
                      <div class="header">
                            <h3>Featured Product</h3>
-                           <h2>Popular Products</h2>
+                           <h2>New Arivals</h2>
                      </div>
                </div>
          </div>
          <div class="row">
                <!-- Single Product -->
-               <div class="col-md-6 col-lg-4 col-xl-3">
-                     <div id="product-1" class="single-product">
-                           <div class="part-1">
-                                 <ul>
-                                       <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-                                       <li><a href="#"><i class="fas fa-heart"></i></a></li>
-                                       <li><a href="#"><i class="fas fa-plus"></i></a></li>
-                                       <li><a href="#"><i class="fas fa-expand"></i></a></li>
-                                 </ul>
-                           </div>
-                           <div class="part-2">
-                                 <h3 class="product-title">Here Product Title</h3>
-                                 <h4 class="product-old-price">₹79.99</h4>
-                                 <h4 class="product-price">₹49.99</h4>
-                           </div>
-                     </div>
-               </div>
-               <!-- Single Product -->
-               <div class="col-md-6 col-lg-4 col-xl-3">
-                     <div id="product-2" class="single-product">
-                           <div class="part-1">
-                                 <span class="discount">15% off</span>
-                                 <ul>
-                                       <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-                                       <li><a href="#"><i class="fas fa-heart"></i></a></li>
-                                       <li><a href="#"><i class="fas fa-plus"></i></a></li>
-                                       <li><a href="#"><i class="fas fa-expand"></i></a></li>
-                                 </ul>
-                           </div>
-                           <div class="part-2">
-                                 <h3 class="product-title">Here Product Title</h3>
-                                 <h4 class="product-price">₹49.99</h4>
-                           </div>
-                     </div>
-               </div>
-               <!-- Single Product -->
-               <div class="col-md-6 col-lg-4 col-xl-3">
-                     <div id="product-3" class="single-product">
-                           <div class="part-1">
-                                 <ul>
-                                       <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-                                       <li><a href="#"><i class="fas fa-heart"></i></a></li>
-                                       <li><a href="#"><i class="fas fa-plus"></i></a></li>
-                                       <li><a href="#"><i class="fas fa-expand"></i></a></li>
-                                 </ul>
-                           </div>
-                           <div class="part-2">
-                                 <h3 class="product-title">Here Product Title</h3>
-                                 <h4 class="product-old-price">₹79.99</h4>
-                                 <h4 class="product-price">₹49.99</h4>
-                           </div>
-                     </div>
-               </div>
-               <!-- Single Product -->
-               <div class="col-md-6 col-lg-4 col-xl-3">
-                     <div id="product-4" class="single-product">
-                           <div class="part-1">
-                                 <span class="new">new</span>
-                                 <ul>
-                                       <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-                                       <li><a href="#"><i class="fas fa-heart"></i></a></li>
-                                       <li><a href="#"><i class="fas fa-plus"></i></a></li>
-                                       <li><a href="#"><i class="fas fa-expand"></i></a></li>
-                                 </ul>
-                           </div>
-                           <div class="part-2">
-                                 <h3 class="product-title">Here Product Title</h3>
-                                 <h4 class="product-price">₹49.99</h4>
-                           </div>
-                     </div>
-               </div>
-               <!-- Single Product -->
+               <% pro.forEach(product => { %>
+                  <div class="col-md-6 col-lg-4 col-xl-3">
+                        <div id="product-1" class="single-product" style="background: url(/product_img/<%= product.images[0] %>) no-repeat center; background-size: contain; background-color: #FFFFFF;">
+
+                              <div class="part-1">
+                                    <ul>
+                                          <!-- <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li> -->
+                                          <li><a href="#"><i class="fas fa-heart"></i></a></li>
+                                          <!-- <li><a href="#"><i class="fas fa-plus"></i></a></li> -->
+                                          <li><a href="/productDetails/<%= product._id -%>"><i class="fas fa-expand"></i></a></li>
+                                    </ul>
+                              </div>
+                              <div class="part-2">
+                                    <h3 class="product-title"> <%- product.lapName %></h3>
+                                    <h4 class="product-old-price">₹<%- product.price %></h4>
+                                    <h4 class="product-price">₹<%- product.discountPrice %></h4>
+                              </div>
+                        </div>
+                  </div>
+               <% }) %>
+               
                <a href="/products"><button type="button" class="btn btn-primary">View More</button></a>
                
          </div>
