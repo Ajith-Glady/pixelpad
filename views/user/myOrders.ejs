@@ -45,6 +45,8 @@
                           <span class="badge rounded-pill bg-success"><%-ele.orderStatus%></span>
                         <% }else if(ele.orderStatus == 'cancelled'){ %>
                           <span class="badge rounded-pill bg-danger"><%-ele.orderStatus%></span>
+                        <% }else if(ele.orderStatus == 'Order Returned'){ %>
+                          <span class="badge rounded-pill bg-danger"><%-ele.orderStatus%></span>
                         <% } %>
                       </div>
                     </div>

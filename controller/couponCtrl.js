@@ -78,7 +78,7 @@ module.exports = {
          console.log('reached to patch edit coupon');
          const couponData = req.body
          const checkCoupon = await coupon.findOne({couponCode : couponData.couponCode})
-         if(checkCoupon){
+         if(checkCoupon == null){
             res.json({
                success : false,
             })

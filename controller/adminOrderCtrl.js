@@ -47,6 +47,7 @@ module.exports = {
 
          const rtn = await orderReturn.find()
          console.log('retrurn requests: ',rtn);
+         console.log('total orders: ',oders.length);
 
          const totalItems = oders.length;
          const totalPages = Math.ceil(totalItems / 10);
@@ -83,6 +84,53 @@ module.exports = {
       }
    },
 
+   returnRequests : async (req,res) => {
+      try{
+         console.log('reched to return request showring page')
+         const oders = await orders.aggregate([
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'userId',
+                    foreignField: '_id',
+                    as: 'userName'
+                }
+            },
+            { $unwind: '$userName' },
+            {
+                $match: {
+                    'products.status': 'Return requested'
+                }
+            },
+            { $sort: { orderDate: -1 } },
+            {
+                $project: {
+                    username: "$userName.name",
+                    userId: 1,
+                    products: 1,
+                    address: 1,
+                    orderDate: 1,
+                    expectedDeliveryDate: 1,
+                    paymentMethod: 1,
+                    paymentStatus: 1,
+                    totalAmount: 1,
+                    deliveryDate: 1,
+                    orderStatus: 1,
+                    discountAmount: 1,
+                    subTotalAmount: 1,
+                }
+            }
+        ]);
+         const rtn = await orderReturn.find()
+         res.render('admin/orderReturnRequests',{
+            data: oders,
+            retun: rtn,
+         })
+      }catch(err){
+         console.log(err);
+      }
+   },
+
    orderReturnView : async (req,res) => {
       try{
          console.log('reached to return view!!');
@@ -110,9 +158,22 @@ module.exports = {
             { $set: { 'products.$.status': 'returned' } }
          );
          console.log(x);   
+         const [walletuser,pro,odr] = await Promise.all([
+            wallet.findOne({userId : rtn.userId}),
+            products.findOne({ _id : rtn.productId}),
+            orders.findOne({_id : req.params.odrId})
+         ])
+         // const walletuser = await wallet.findOne({userId : rtn.userId})
+         // const pro = await products.findOne({ _id : rtn.productId})
+         
+         let checkAllPro = odr.products.every( product => product.status === 'returned')
+         if(checkAllPro){
+            await orders.updateOne(
+               {_id : req.params.odrId},
+               {$set : {orderStatus : 'Order Returned'}}
+            )
+         }
 
-         const walletuser = await wallet.findOne({userId : rtn.userId})
-         const pro = await products.findOne({ _id : rtn.productId})
          if(walletuser){
             const oldAmount = walletuser.wallet
             
@@ -180,6 +241,18 @@ module.exports = {
 
          res.redirect('/admin/order')
 
+      }catch(err){
+         console.log(err);
+      }
+   },
+
+
+   viewOrderDeatails : async (req,res) => {
+      try{
+         console.log('reached to view order details');
+         const odr = await orders.findOne({_id : req.params.id}).populate('products.productId')
+         console.log("Single Order details :",odr);
+         res.render('admin/singleOrderDetails',{order : odr})
       }catch(err){
          console.log(err);
       }

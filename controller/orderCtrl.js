@@ -206,12 +206,11 @@ module.exports = {
                })
 
                console.log('product quantity decreased successfuly ............');
-
-               await Promise.all([
-                  order.create(myOrders),
-                  cart.deleteOne({userId : req.session.userdetails._id})
-               ])
             }
+            await Promise.all([
+               order.create(myOrders),
+               cart.deleteOne({userId : req.session.userdetails._id})
+            ])
 
             const oder = await order.findOne({userId : req.session.userdetails._id}).sort({ orderDate : -1 });
             
@@ -268,13 +267,12 @@ module.exports = {
                   })
    
                   console.log('product quantity decreased successfuly ............');
-   
-                  await Promise.all([
-                     order.create(myOrders),
-                     cart.deleteOne({userId : req.session.userdetails._id})
-                  ])
                }
 
+               await Promise.all([
+                  order.create(myOrders),
+                  cart.deleteOne({userId : req.session.userdetails._id})
+               ])
                
                const newAmount = wallt.wallet - orderSummary.total
                await wallet.updateOne({userId : req.session.userdetails._id},{$set : {wallet : newAmount}})

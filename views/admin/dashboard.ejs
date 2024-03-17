@@ -36,16 +36,24 @@
 
 
   <main id="main" class="main">
-
-    <div class="pagetitle">
+    
+    <div class="row">
+      <div class="pagetitle col-md-10">
       <h1>Dashboard</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <!-- <li class="breadcrumb-item"><a href="index.html">Home</a></li> -->
-          <li class="breadcrumb-item active">Dashboard</li>
-        </ol>
-      </nav>
-    </div><!-- End Page Title -->
+        <nav>
+          <ol class="breadcrumb">
+            <!-- <li class="breadcrumb-item"><a href="index.html">Home</a></li> -->
+            <li class="breadcrumb-item active">Dashboard</li>
+          </ol>
+        </nav>
+      </div><!-- End Page Title -->
+      <div class="col-md-2">
+        <a  class="btn btn btn-outline-primary btn-sm ms-auto" data-bs-toggle="modal" data-bs-target="#salesReportModal">
+          <i class="fa-solid fa-download"></i> Sales Report
+        </a>
+      </div>
+    </div>
+    
 
     <section class="section dashboard">
       <div class="row">
@@ -200,17 +208,19 @@
                           <td>
                             <% if(ele.orderStatus=='Order Delivered' ){ %>
                               <span class="badge bg-success"><%- ele.orderStatus %></span>
-                              <% }else if(ele.orderStatus=='Order Processed' ){ %>
-                                <span class="badge bg-primary"><%- ele.orderStatus %></span>
-                                <% }else if(ele.orderStatus=='Order Confirmed' ){ %>
-                                  <span class="badge bg-info"><%- ele.orderStatus %></span>
-                                  <% }else if(ele.orderStatus=='Order Shipped' ){ %>
-                                    <span class="badge bg-secondary"><%- ele.orderStatus %></span>
-                                    <% }else if(ele.orderStatus=='cancelled' ){ %>
-                                      <span class="badge bg-danger"><%- ele.orderStatus %></span>
-                                      <% }else if(ele.orderStatus=='cancelled' ){ %>
-                                        <span class="badge bg-danger"><%- ele.orderStatus %></span>
-                                        <% } %>
+                            <% }else if(ele.orderStatus=='Order Processed' ){ %>
+                              <span class="badge bg-primary"><%- ele.orderStatus %></span>
+                            <% }else if(ele.orderStatus=='Order Confirmed' ){ %>
+                              <span class="badge bg-info"><%- ele.orderStatus %></span>
+                            <% }else if(ele.orderStatus=='Order Shipped' ){ %>
+                              <span class="badge bg-secondary"><%- ele.orderStatus %></span>
+                            <% }else if(ele.orderStatus=='cancelled' ){ %>
+                              <span class="badge bg-danger"><%- ele.orderStatus %></span>
+                            <% }else if(ele.orderStatus=='cancelled' ){ %>
+                              <span class="badge bg-danger"><%- ele.orderStatus %></span>
+                            <% }else{ %>
+                              <span class="badge bg-danger"><%- ele.orderStatus %></span>
+                            <% } %>
 
                           </td>
                         </tr>
@@ -297,74 +307,13 @@
 
           <!-- Budget Report -->
           <div class="card">
-            <div class="filter">
-              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <li class="dropdown-header text-start">
-                  <h6>Filter</h6>
-                </li>
-
-                <li><a class="dropdown-item" href="#">Today</a></li>
-                <li><a class="dropdown-item" href="#">This Month</a></li>
-                <li><a class="dropdown-item" href="#">This Year</a></li>
-              </ul>
-            </div>
+            
 
             <div class="card-body pb-0">
-              <h5 class="card-title">Budget Report <span>| This Month</span></h5>
-
-              <div id="budgetChart" style="min-height: 400px;" class="echart"></div>
-
-              <script>
-                document.addEventListener("DOMContentLoaded", () => {
-                  var budgetChart = echarts.init(document.querySelector("#budgetChart")).setOption({
-                    legend: {
-                      data: ['Allocated Budget', 'Actual Spending']
-                    },
-                    radar: {
-                      // shape: 'circle',
-                      indicator: [{
-                        name: 'Sales',
-                        max: 6500
-                      },
-                      {
-                        name: 'Administration',
-                        max: 16000
-                      },
-                      {
-                        name: 'Information Technology',
-                        max: 30000
-                      },
-                      {
-                        name: 'Customer Support',
-                        max: 38000
-                      },
-                      {
-                        name: 'Development',
-                        max: 52000
-                      },
-                      {
-                        name: 'Marketing',
-                        max: 25000
-                      }
-                      ]
-                    },
-                    series: [{
-                      name: 'Budget vs spending',
-                      type: 'radar',
-                      data: [{
-                        value: [4200, 3000, 20000, 35000, 50000, 18000],
-                        name: 'Allocated Budget'
-                      },
-                      {
-                        value: [5000, 14000, 28000, 26000, 42000, 21000],
-                        name: 'Actual Spending'
-                      }
-                      ]
-                    }]
-                  });
-                });
-              </script>
+              <h5 class="card-title">Top-Selling Category <span></span></h5>
+              <div class="card-body ">
+                <h4><%- bestCat.name %></h4>
+              </div>
 
             </div>
           </div><!-- End Budget Report -->
@@ -403,6 +352,102 @@
     </section>
 
   </main><!-- End #main -->
+
+
+  <!-- Sales Report Modal -->
+<div class="modal fade" id="salesReportModal" tabindex="-1" aria-labelledby="salesReportModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <form id="salesReportForm" action="/admin/salesreport" method="POST">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="salesReportModalLabel">Sales Report</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                  <!-- Input fields for start date, end date, and download format -->
+                  <div class="mb-3">
+                      <label for="startDate" class="form-label">Start Date</label>
+                      <input type="date" class="form-control" id="startDate" name="startdate" oninput="validateForm()">
+                      <small id="startDateError" class="text-danger"></small>
+                  </div>
+                  <div class="mb-3">
+                      <label for="endDate" class="form-label">End Date</label>
+                      <input type="date" class="form-control" id="endDate" name="enddate" oninput="validateForm()">
+                      <small id="endDateError" class="text-danger"></small>
+                  </div>
+                  <div class="mb-3">
+                      <label for="downloadFormat" class="form-label">Download Format</label>
+                      <select class="form-select" id="downloadFormat" name="downloadformat" oninput="validateForm()">
+                          <option value="">Select Format</option>
+                          <option value="pdf">PDF</option>
+                          <option value="excel">Excel</option>
+                      </select>
+                      <small id="downloadFormatError" class="text-danger"></small>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary" id="generateReportBtn" disabled>Generate Report</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div>
+
+
+<script>
+  function validateForm() {
+  const startDate = document.getElementById('startDate').value;
+  const endDate = document.getElementById('endDate').value;
+  const downloadFormat = document.getElementById('downloadFormat').value;
+
+  const startDateError = document.getElementById('startDateError');
+  const endDateError = document.getElementById('endDateError');
+  const downloadFormatError = document.getElementById('downloadFormatError');
+  const generateReportBtn = document.getElementById('generateReportBtn');
+
+  // Reset error messages
+  startDateError.innerHTML = "";
+  endDateError.innerHTML = "";
+  downloadFormatError.innerHTML = "";
+
+  // Validate Start Date
+  const currentDate = new Date().toISOString().split('T')[0];
+  if (startDate === "") {
+      startDateError.innerHTML = "Start Date is required";
+  } else if (startDate > currentDate) {
+      startDateError.innerHTML = "Start Date must be less than or equal to the current date";
+  }
+
+  // Validate End Date
+  if (endDate === "") {
+      endDateError.innerHTML = "End Date is required";
+  } else if (endDate > currentDate) {
+      endDateError.innerHTML = "End Date must be less than or equal to the current date";
+  } else if (endDate < startDate) {
+      endDateError.innerHTML = "End Date cannot be less than Start Date";
+  }
+
+  // Validate Download Format
+  if (downloadFormat === "") {
+      downloadFormatError.innerHTML = "Download Format is required";
+  }
+
+  // Enable or disable the Generate Report button based on validation
+  if (!startDateError.innerHTML && !endDateError.innerHTML && !downloadFormatError.innerHTML) {
+      generateReportBtn.disabled = false;
+  } else {
+      generateReportBtn.disabled = true;
+  }
+}
+
+  function generateReport() {
+      // Add logic to handle report generation based on selected options
+      // For example, you can fetch the selected values from the input fields and perform an AJAX request to generate the report.
+      // Here, I'm just closing the modal for demonstration purposes.
+      $('#salesReportModal').modal('hide');
+  }
+</script>
 
 
   <!-- Vendor JS Files -->

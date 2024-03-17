@@ -82,7 +82,6 @@ module.exports = {
                   }
                ]
             }
-
             await cart.create(firstcart);
             res.redirect(`/productDetails/${req.params.id}`)
          }
@@ -99,6 +98,7 @@ module.exports = {
                      {
                         productId : req.params.id,
                         quantity : 1,
+                        price : pro.discountPrice
                      }
                   }
                }

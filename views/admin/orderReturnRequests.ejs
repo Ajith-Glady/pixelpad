@@ -1,0 +1,96 @@
+<%-include('../partials/admin/header')%>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.0.2/css/dataTables.bootstrap5.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.1/css/buttons.bootstrap5.css">
+
+
+
+
+   <div class="height-100 bg-light container pt-5">
+      <div class="row pt-5">
+         <div class="col-md-10">
+            <h4> Orders</h4>
+         </div>
+         <div class="col-md-2">
+            
+         </div>
+      </div>
+      <table id="example" class="table table-striped pt-2" style="width:100%">
+         <thead>
+            <tr>
+               <th>No</th>
+               <th>User</th>
+               <th>Order Id</th>
+               <th>Purchase Date</th>
+               <th>Pay Methode</th>
+               <th>Total price</th>
+               <th>Order Status</th>
+               <th>Return requests</th>
+               <th>View</th>
+            </tr>
+         </thead>
+         <tbody>
+            <% data.forEach((ele, i)=> { %>
+               
+               <tr>
+                   <th scope="row">
+                       <%= i + 1 %>
+                   </th>
+                   <td><%- ele.username %></td>
+                   <td><%- ele._id %></td>
+                   <td><%- ele.orderDate.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' , dateStyle: 'short',timeStyle: 'short' }) %></td>
+                   <td><%- ele.paymentMethod %></td>
+                   <td><%- ele.totalAmount %></td>
+                   <td>
+                     <span class="badge bg-success">Delivered</span>
+                   </td>
+                   <td>
+                       <% const hasReturnRequested=retun.some(returnData=> returnData.orderId.toString() ===
+                           ele._id.toString() && returnData.status == 'requested') %>
+                        <% if(hasReturnRequested){ %>
+                           <a href="/admin/returnView/<%- ele._id %>"><span
+                                 class="badge bg-info text-dark">Requested</span></a>
+                        <% }else{ %>
+                           <p class="text-primary">No</p>
+                        <% } %>
+                   </td>
+                   <td>
+                       <!-- <button type="button" class="btn btn-primary btn-sm" id = "OrderDetailsShow">View</button> -->
+                       <a href="/admin/orderView/<%- ele._id %>" class="btn btn-primary btn-sm">View</a>
+                   </td>
+               </tr>
+               <% }) %>
+         </tbody>
+      </table>
+   </div>
+
+   <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+   <script src="https://cdn.datatables.net/2.0.2/js/dataTables.js"></script>
+   <script src="https://cdn.datatables.net/2.0.2/js/dataTables.bootstrap5.js"></script>
+   <script src="https://cdn.datatables.net/buttons/3.0.1/js/dataTables.buttons.js"></script>
+   <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.bootstrap5.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+   <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.html5.min.js"></script>
+   <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.print.min.js"></script>
+   <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.colVis.min.js"></script>
+
+   <script>
+      new DataTable('#example', {
+         layout: {
+            topStart: {
+               buttons: ['copy', 'excel', 'pdf', 'colvis']
+            }
+         }
+      });
+   </script>
+
+
+
+
+
+
+
+   <%-include('../partials/admin/footer')%>

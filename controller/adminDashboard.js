@@ -1,7 +1,9 @@
 const users = require('../models/userModel')
 const product = require('../models/productModel')
 const orders = require('../models/orderModel')
+const category = require('../models/categoryModel')
 var moment = require('moment')
+const {generateSalesPDF} = require('../util/saledPdfCreater')
 const { format } = require("date-fns");
 
 
@@ -11,7 +13,7 @@ module.exports = {
       try {
          console.log('rendering admin dashboard');
 
-         const [sales, revenue, customers, recentOrders, topSelling] = await Promise.all([
+         const [sales, revenue, customers, recentOrders, topSelling,topSellCategory] = await Promise.all([
             orders.aggregate([
                { $match: { orderStatus: "Order Delivered" } },
                { $group: { _id: null, totalSalesCount: { $sum: 1 } } }
@@ -36,15 +38,44 @@ module.exports = {
                { $sort: { totalQuantity: -1 } },
                { $limit: 5 },
                { $project: { _id: 1, totalQuantity: 1, productInfo: { $arrayElemAt: ['$productInfo', 0] } } }
+            ]),
+            orders.aggregate([
+               { $unwind: '$products' },
+               {
+                  $group : {
+                     _id : '$products.productId',
+                     totalQuantitySold : { $sum : '$products.quantity'}
+                  }
+               },
+               {
+                  $lookup : {
+                     from : 'products',
+                     foreignField : '_id',
+                     localField : '_id',
+                     as : 'productDetails'
+                  }
+               },
+               { $unwind: '$productDetails' },
+               {
+                  $group : {
+                     _id : '$productDetails.category',
+                     totalQuantitySold : { $sum : '$totalQuantitySold'}
+                  }
+               },
+               { $sort: { totalQuantitySold: -1 } },
+               { $limit: 1 }
             ])
          ]);
 
          console.log('topSelling :', topSelling);
+         console.log('top selling categories :',topSellCategory);
+         const bestCat = await category.findOne({_id : topSellCategory[0]._id})
+         console.log('topselling category details :',bestCat);
 
          const totalSales = sales[0] ? sales[0].totalSalesCount : 0;
          const totalRevenue = revenue[0] ? revenue[0].totalDiscountAmount : 0;
 
-         res.render('admin/dashboard', { totalSales, totalRevenue, customers, recentOrders, topSelling });
+         res.render('admin/dashboard', { totalSales, totalRevenue, customers, recentOrders, topSelling,bestCat });
       } catch (err) {
          console.log(err);
          res.status(500).send('Internal Server Error');
@@ -193,5 +224,52 @@ module.exports = {
          console.log(error);
       }
    },
+
+
+   downloadSalesReport: async(req,res) => {
+      try {
+         const { startdate, enddate, downloadformat } = req.body
+         let startDate = new Date(startdate)
+         let endDate = new Date(enddate)
+         endDate.setHours(23, 59, 59, 999);
+         const order = await orders.find(
+             { paymentStatus: "paid", orderDate: { $gte: startDate, $lte: endDate, } }).populate("products.productId");
+
+         if(downloadformat == 'pdf'){
+             const pdfBuffer = await generateSalesPDF(order, startDate, endDate);
+
+             // Set headers for the response
+             res.setHeader("Content-Type", "application/pdf");
+             res.setHeader(
+                 "Content-Disposition",
+                 "attachment; filename=sales Report.pdf"
+             );
+
+             res.status(200).end(pdfBuffer);
+         }else{
+
+             let totalSales = 0;
+
+             order.forEach((order) => {
+                 totalSales += order.discountAmount || 0;
+             });
+
+             pdf.downloadReport(
+                 req,
+                 res,
+                 order,
+                 startDate,
+                 endDate,
+                 totalSales.toFixed(2),
+                 downloadformat
+             );
+         }
+
+     } catch (error) {
+         console.log(error);
+
+
+     }
+   }
 
 }

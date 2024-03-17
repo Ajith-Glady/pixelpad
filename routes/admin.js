@@ -59,8 +59,10 @@ router.get('/deleteProduct/:id',check.verifyAdmin,productCtrl.getDeleteProduct)
 router.get('/order',check.verifyAdmin,order.getOrders)
 router.get('/updateOrderStatus/:status/:id',check.verifyAdmin,order.orderStatusUpdate)
 router.get('/returnView/:id',check.verifyAdmin,order.orderReturnView)
+router.get('/returnRequestList',order.returnRequests)
 router.get('/acceptReturn/:id/:odrId',check.verifyAdmin,order.acceptOrderReturn)
 router.get('/rejectReturn/:id/:odrId',check.verifyAdmin,order.rejectOrderReturn)
+router.get('/orderView/:id',order.viewOrderDeatails)
 
 
 // -------------------Coupon Control --------------
@@ -77,6 +79,7 @@ router.patch('/editCoupon',check.verifyAdmin,coupon.patchEditCoupon)
 router.get('/count-orders-by-day',dashboard.getCount)
 router.get('/count-orders-by-month',dashboard.getCount)
 router.get('/count-orders-by-year',dashboard.getCount)
+router.post('/salesreport',dashboard.downloadSalesReport)
 
 
 
