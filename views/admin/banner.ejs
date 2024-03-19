@@ -1,0 +1,80 @@
+<%-include('../partials/admin/header')%>
+
+   <link rel="stylesheet" href="../styles/addProduct.css">
+
+
+
+   <% if (successMessage) { %>
+      <div class="alert alert-success" role="alert" id="successMessage">
+          <%= successMessage %>
+      </div>
+  
+      <script>
+          // Hide the success message after 5 seconds
+          setTimeout(function() {
+              document.getElementById('successMessage').style.display = 'none';
+          }, 5000);
+      </script>
+  <% } %>
+   <% if (errorMessage) { %>
+      <div class="alert alert-success" role="alert" id="errorMessage">
+          <%= errorMessage %>
+      </div>
+  
+      <script>
+          // Hide the success message after 5 seconds
+          setTimeout(function() {
+              document.getElementById('errorMessage').style.display = 'none';
+          }, 5000);
+      </script>
+  <% } %>
+
+
+
+   <div class="container">
+      <div class="row">
+          
+          <div class="col-md-12">
+              
+              <a href="/admin/addbannerpage"  id="exampleModal" class="btn btn-primary p-2 m-3 float-end">Add Banner</a>
+
+              
+                  <div class="row">
+                      <div class="col-md-12">
+                          <h2>Available Banners</h2>
+                          <div class="row" id="bannerList">
+                              
+
+                           <% banners.forEach((banner,index) => { %>
+
+                              <div class="col-md-4 mb-4">
+                                  <div class="card">
+                                      <img src="/product_img/<%= banner.bannerImage %>" class="card-img-top" alt="Banner 1">
+                                      <div class="card-body">
+                                          <h5 class="card-title"></h5>
+                                          <!-- Add more details or actions as needed -->
+                                      </div>
+                                  </div>
+                              </div>
+
+                           <% }) %>
+                              
+
+                              
+
+
+                              
+              
+                              <!-- Repeat the above block for each banner -->
+                          </div>
+                      </div>
+                  </div>
+              
+
+          </div>
+      </div>
+
+
+
+
+   <%-include('../partials/admin/footer')%>

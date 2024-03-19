@@ -1,0 +1,94 @@
+<%-include('../partials/admin/header')%>
+
+   <link rel="stylesheet" href="../styles/addProduct.css">
+
+
+
+
+
+
+   <div class="container justify-content-center">
+      <form onsubmit="return validateForm()" id="bannerForm" action="/admin/addbanner" method="post" enctype="multipart/form-data">
+          <div class="form-group">
+              <label for="bannerType">Banner Type</label>
+              <select id="bannerType" name="bannerName" required>
+                  <option value="mainBanner">Main Banner</option>
+                  <option value="subBanner1">Sub Banner 1</option>
+                  <option value="subBanner2">Sub Banner 2</option>
+              </select>
+          </div>
+  
+          <label for="banner">Upload Images</label><br><br>
+          <div class="image-upload">
+              <div class="dropzone">
+                  <input type="file" id="bannerImage" name="banner" onchange="displayImage(this)">
+                  <img id="previewBanner" class="preview-image" alt="Drag & drop or click to select image">
+              </div>
+          </div>
+  
+          <div class="form-group d-grid gap-2">
+              <button class="btn btn-primary" type="submit" id="submitButton" disabled>Add Banners</button>
+          </div>
+      </form>
+  </div>
+  <script>
+   function displayImage(input) {
+       const previewImage = document.getElementById('previewBanner');
+       const file = input.files[0];
+
+       if (file) {
+           const reader = new FileReader();
+           reader.onload = function (e) {
+               previewImage.src = e.target.result;
+           };
+           reader.readAsDataURL(file);
+       } else {
+           // Clear the preview if no file is selected
+           previewImage.src = '';
+       }
+
+       updateSubmitButton(); // Call the function to update the button status
+   }
+
+   function updateSubmitButton() {
+       const bannerType = document.getElementById('bannerType').value;
+       const bannerImage = document.getElementById('bannerImage').value;
+
+       const submitButton = document.getElementById('submitButton');
+       submitButton.disabled = !(bannerType && bannerImage);
+   }
+
+   function validateForm() {
+       const bannerType = document.getElementById('bannerType').value;
+
+       if (!bannerType) {
+           Toastify({
+               text: "Please select a banner type.",
+               duration: 3000,
+               close: true,
+               gravity: "top",
+               position: 'left',
+               backgroundColor: "red",
+               stopOnFocus: true,
+           }).showToast();
+           return false;
+       }
+
+       // Add additional validations as needed
+
+       return true;
+   }
+</script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
+
+
+
+
+   <%-include('../partials/admin/footer')%>

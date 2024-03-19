@@ -3,6 +3,7 @@ const users = require('../models/userModel')
 const products = require('../models/productModel')
 const category = require('../models/categoryModel')
 const { rawListeners } = require('../models/userModel');
+const banner = require('../models/bannerModel')
 
 module.exports = {
    getLogin : (req,res) => {
@@ -210,6 +211,62 @@ module.exports = {
          await products.updateMany({ category: id }, { $set: { status: 'active' } });
 
          res.json({success : true})
+      }catch(err){
+         console.log(err);
+      }
+   },
+
+
+   // -------------- Banner Controll ---------
+
+   getBanner : async(req,res) => {
+      try{
+         console.log('reached to banner page');
+         const banners = await banner.find()
+
+         const successMessage = req.session.successMessage
+         const errorMessage = req.session.errorMessage
+         delete req.session.successMessage
+         delete req.session.errorMessage
+
+         res.render('admin/banner',{banners,successMessage,errorMessage})
+      }catch(err){
+         console.log(err);
+      }
+   },
+
+   getAddBanner : async(req,res) => {
+      try{
+         console.log('reached to get add banner');
+         res.render('admin/addBanner')
+      }catch(err){
+         console.log(err);
+      }
+   },
+
+   postAddBanner : async(req,res) => {
+      try{
+         console.log('post add banner');
+         const imgFiles = req?.files
+         const details = req.body
+
+         console.log('imgfiles :',imgFiles);
+
+         console.log(details);
+
+         let bannerImage = imgFiles.banner[0].filename
+         const bannerDtls = {...details,bannerImage}
+         const bannerExist = await banner.findOne({bannerName : req.body.bannerName})
+
+         if(!bannerExist){
+            req.session.successMessage = 'New Banner added successfully';
+            await banner.create(bannerDtls)
+            res.redirect('/admin/banner')
+         }else{
+            await banner.updateOne({ bannerName : req.body.bannerName},{ $set : { bannerImage : bannerImage}})
+            req.session.errorMessage = 'Existing banner is replaced';
+            res.redirect('/admin/banner')
+         }
       }catch(err){
          console.log(err);
       }

@@ -7,18 +7,25 @@ const wishList = require('../models/wishListModel')
 const { hashData,verifyHash} = require('../util/bcrypt')
 const wallet = require('../models/walletModel')
 const walletHistory = require('../models/walletHistoryModel')
+const banner = require('../models/bannerModel')
 
 module.exports = {
    getGustPage : async(req,res) => {
       const pro = await products.find({status : 'active'}).sort({ createdAt: -1 }).limit(4)
+      const banr = await banner.find({bannerName : /^mainBanner/})
+      const subBanner = await banner.find({ bannerName: /^subBanner/ })
       console.log('products :',pro);
-      res.render('user/userHome',{user : req.session.user,pro});
+      console.log('Banner :',banr);
+      console.log('sub banner :',subBanner);
+      res.render('user/userHome',{user : req.session.user,pro,banr,subBanner});
    },
    
    getHomePage :async(req,res)=> {
       const pro = await products.find({status : 'active'}).sort({ createdAt: -1 }).limit(4)
+      const banr = await banner.find({bannerName : /^mainBanner/})
+      const subBanner = await banner.find({ bannerName: /^subBanner/ })
       console.log('products :',pro);
-      res.render('user/userHome',{user : req.session.user,pro})
+      res.render('user/userHome',{user : req.session.user,pro,banr,subBanner})
    },
 
    getProductPage :async (req,res) => {

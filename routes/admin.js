@@ -82,6 +82,15 @@ router.get('/count-orders-by-year',dashboard.getCount)
 router.post('/salesreport',dashboard.downloadSalesReport)
 
 
+// ------------- Banner -----------------
+
+const uploadBanner = [
+   {name : "banner",maxCount : 1}
+]
+
+router.get('/banner',adminCtrl.getBanner)
+router.get('/addbannerpage',adminCtrl.getAddBanner)
+router.post('/addbanner',upload.fields(uploadBanner),adminCtrl.postAddBanner)
 
 
 router.get('/logout',adminCtrl.logOut)
